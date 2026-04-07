@@ -321,7 +321,7 @@ h3 {
 
 .membership-container {
   width: 90vw;
-  height: 30vh;
+  height: 35vh;
 
   background: #8fae9c;
   border-radius: 25px;
@@ -331,13 +331,15 @@ h3 {
   align-items: center;
 
   padding: 40px 60px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
+
+
 
 /* Left */
 .left h1 {
   font-family: 'Playfair Display', serif;
-  font-size: 48px;
+  font-size: 53px;
   color: #2b2b2b;
   line-height: 1.1;
 }
@@ -488,3 +490,68 @@ h3 {
   }
 }
 
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 0 10%;
+    gap: 4rem;
+}
+
+.image-container {
+    flex: 1;
+    height: 100 vh;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.image-container img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 8px; /* Soft edges as seen in the image */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.content-container {
+    flex: 1;
+    max-width: 400px;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: normal;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+.description {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: #555;
+}
+
+.cta-button {
+    padding: 10px 25px;
+    background-color: #a5c3b1; /* Muted green button color */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: var(--green-dark-dark);
+}
+
+/* Simple Responsive Adjustment */
+@media (max-width: 768px) {
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem;
+    }
+}
