@@ -10,6 +10,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap"
     rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap" rel="stylesheet">
 
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
@@ -22,83 +24,89 @@
     <!-- Topbar -->
     <div class="topbar">
       <div class="topbar-left">
-        <a href="#">Join now</a>
-        <a href="#">Log in</a>
-        <a href="#">Contact</a>
+        <a href="#">
+          <i class="fa-solid fa-user-plus"></i> Join Now
+        </a>
+        <a href="#">
+          <i class="fa-solid fa-right-to-bracket"></i> Log In
+        </a>
+        <a href="#">
+          <i class="fa-solid fa-phone"></i> Contact
+        </a>
+
       </div>
 
       <div class="topbar-right">
-        <a href="https://www.facebook.com/groups/kds.kuet/">Facebook</a>
-        <a href="#">LinkedIn</a>
-        <a href="#">Email</a>
+        <a href="https://www.facebook.com/groups/kds.kuet/" target="_blank">
+          <i class="fa-brands fa-facebook"></i> Facebook
+        </a>
+        <a href="#" target="_blank">
+          <i class="fa-brands fa-linkedin"></i> LinkedIn
+        </a>
+        <a href="mailto:example@gmail.com">
+          <i class="fa-solid fa-envelope"></i> Email
+        </a>
       </div>
     </div>
 
-    <!-- Logo -->
-    <div class="logo-section">
-      <div class="logo">
-        <span class="logo-kuet">KUET</span>
-        <span class="logo-text">Debating Society</span>
-        <span class="logo-kds">KDS</span>
+    <div class="main-header" id="main-header">
+      <!-- Logo -->
+      <div class="logo-section">
+        <div class="logo">
+          <span class="logo-kuet">KUET</span>
+          <span class="logo-text">Debating Society</span>
+          <span class="logo-kds">KDS</span>
+        </div>
       </div>
+
+      <nav class="navbar">
+        <div class="nav-div" id="nav-div">
+          <ul class="nav-list">
+
+            <li class="nav-item">
+              <span class="nav-link">Events</span>
+              <ul class="dropdown">
+                <li><a href="#">Upcoming Events</a></li>
+                <li><a href="#">Past Events</a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <span class="nav-link">Debates</span>
+              <ul class="dropdown">
+                <li><a href="#">Inter KUET Debate</a></li>
+                <li><a href="#">Workshops</a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <span class="nav-link">Membership</span>
+              <ul class="dropdown">
+                <li><a href="#">Join KDS</a></li>
+                <li><a href="#">Member List</a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <span class="nav-link">Visit</span>
+              <ul class="dropdown">
+                <li><a href="#">Campus Tour</a></li>
+                <li><a href="#">Location</a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <span class="nav-link">Resources</span>
+              <ul class="dropdown">
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Materials</a></li>
+              </ul>
+            </li>
+
+          </ul>
+        </div>
+      </nav>
     </div>
-
-    <nav class="navbar">
-      <div class="nav-div">
-        <ul class="nav-list">
-
-          <li class="nav-item">
-            <button class="nav-btn">Events ▼</button>
-            <div class="dropdown">
-              <a href="#">Upcoming Events</a>
-              <a href="#">Past Events</a>
-            </div>
-          </li>
-
-          <li class="nav-item">
-            <button class="nav-btn">Debates ▼</button>
-            <div class="dropdown">
-              <a href="#">Inter KUET Debate</a>
-              <a href="#">Workshops</a>
-            </div>
-          </li>
-
-          <li class="nav-item">
-            <button class="nav-btn">Membership ▼</button>
-            <div class="dropdown">
-              <a href="#">Join KDS</a>
-              <a href="#">Member List</a>
-            </div>
-          </li>
-
-          <li class="nav-item">
-            <button class="nav-btn">Visit ▼</button>
-            <div class="dropdown">
-              <a href="#">Campus Tour</a>
-              <a href="#">Location</a>
-            </div>
-          </li>
-
-          <li class="nav-item">
-            <button class="nav-btn">Resources ▼</button>
-            <div class="dropdown">
-              <a href="#">Blog</a>
-              <a href="#">Materials</a>
-            </div>
-          </li>
-
-          <li class="nav-item">
-            <a href="#" class="nav-link">About Us</a>
-          </li>
-
-          <li class="nav-item">
-            <a href="#" class="nav-link">Contact Us</a>
-          </li>
-
-        </ul>
-      </div>
-    </nav>
-
   </header>
 
   <!-- Hero -->
@@ -116,8 +124,72 @@
       Engineering and Technology. KDS has been working for the popularization of debate in the South-west
       region of our country for almost a decade.
     </p>
+    <button class="btn-secondary">Learn More</button>
   </section>
 
+
+
+  <section class="calendar-section">
+    <div class="calendar-content">
+      <h2 class="calendar-title">Coming up...</h2>
+      <p class="calendar-text">
+        Stay updated with all the latest events, workshops, and debates
+        organized by KUET Debating Society.
+      </p>
+      <a href="#" class="calendar-btn">View calendar</a>
+    </div>
+  </section>
+
+
+  <section class="membership">
+    <div class="membership-container">
+
+      <div class="left">
+        <h1>Become a<br>member<br>today.</h1>
+      </div>
+
+      <div class="right">
+        <p>
+          Join Cambridge’s largest student society today for the opportunity to
+          see world-class speakers and debaters as well as many other member benefits.
+        </p>
+        <a href="#" class="join-btn">Join today</a>
+      </div>
+
+    </div>
+  </section>
+
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const toggles = document.querySelectorAll('.navbar .dropdown-toggle');
+
+      toggles.forEach(toggle => {
+        toggle.addEventListener('click', function (e) {
+          e.stopPropagation();
+          toggles.forEach(t => t.classList.remove('active'));
+          this.classList.toggle('active');
+        });
+      });
+
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', function () {
+        toggles.forEach(t => t.classList.remove('active'));
+      });
+    });
+
+    window.addEventListener("scroll", function () {
+      const header = document.querySelector(".header");
+
+      if (window.scrollY > 50) {
+        header.classList.add("scrolled");
+      } else {
+        header.classList.remove("scrolled");
+      }
+    });
+
+  </script>
 </body>
 
 </html>
