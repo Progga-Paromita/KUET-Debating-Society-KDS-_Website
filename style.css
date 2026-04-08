@@ -96,6 +96,15 @@ h3 {
 }
 
 
+#profile-icon {
+  background: rgb(167, 167, 167);
+  color: rgb(0, 0, 0);
+  padding: 8px 12px;
+  border-radius: 20px solid rgb(73, 73, 73);
+  font-size: 12px;
+  text-decoration: none;
+  transition: 0.2s;
+}
 
 
 
@@ -547,11 +556,117 @@ h3 {
     background-color: var(--green-dark-dark);
 }
 
-/* Simple Responsive Adjustment */
+/* ================= MEMBERS SECTION ================= */
+.members-section {
+  padding: 100px 40px;
+  background: var(--cream);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  text-align: center;
+  margin-bottom: 60px;
+  color: var(--text-dark);
+}
+
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+}
+
+.member-card {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: 0.3s;
+  border: 1px solid var(--border-light);
+}
+
+.member-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.member-avatar {
+  width: 100px;
+  height: 100px;
+  background: var(--green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 40px;
+  color: white;
+}
+
+.member-card h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: var(--text-dark);
+}
+
+.member-role {
+  font-size: 16px;
+  color: var(--green-dark);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.hidden {
+  display: none;
+}
+
+.members-btn-container {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.show-more-btn {
+  background: var(--green);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-family: 'Inter', sans-serif;
+}
+
+.show-more-btn:hover {
+  background: var(--green-dark);
+  transform: translateY(-2px);
+}
+
+/* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
     .hero-section {
         flex-direction: column;
         text-align: center;
         padding: 2rem;
     }
+
+  .members-section {
+    padding: 60px 20px;
+  }
+
+  .section-title {
+    font-size: 36px;
+  }
+
+  .members-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
 }

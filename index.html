@@ -46,6 +46,9 @@
         <a href="mailto:example@gmail.com">
           <i class="fa-solid fa-envelope"></i> Email
         </a>
+        <a href="#members-section" target="_blank" id="profile-icon">
+          <i class="fa-solid fa-user"></i> 
+        </a>
       </div>
     </div>
 
@@ -173,10 +176,104 @@
             </p>
             <button class="cta-button">JOIN TODAY</button>
         </div>
+  </main>
+
+  
+
+  <main class="hero-section">
+        <div class="content-container">
+            <h2 class="title">Spirited Dining<br>and Debate</h2>
+            <p class="description">
+                Join us for food and drinks in our world-renowned debating bar and restaurant. 
+                Whether you are looking for a light bite, a private room with friends, 
+                or a large event, our friendly team is here to help.
+            </p>
+            <button class="cta-button">JOIN TODAY</button>
+        </div>
+        <div class="image-container">
+            <!-- Ensure you have an image file or URL for the src -->
+            <img src="img1.jpg" alt="People cheering with drinks at The Cambridge Union">
+        </div>
     </main>
 
 
+    <!-- Members Section -->
+  <section class="members-section" id="members-section">
+    <div class="container">
+      <h2 class="section-title">Our Team Members</h2>
+      <div class="members-grid">
+        <div class="member-card">
+          <div class="member-avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <h3>John Doe</h3>
+          <p class="member-role">President</p>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <h3>Jane Smith</h3>
+          <p class="member-role">Vice President</p>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <h3>Mike Johnson</h3>
+          <p class="member-role">Secretary</p>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <h3>Sarah Wilson</h3>
+          <p class="member-role">Treasurer</p>
+        </div>
+        <!-- Hidden members -->
+        <div class="member-card hidden">
+          <div class="member-avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <h3>David Brown</h3>
+          <p class="member-role">Events Coordinator</p>
+        </div>
+        <div class="member-card hidden">
+          <div class="member-avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <h3>Emily Davis</h3>
+          <p class="member-role">Public Relations</p>
+        </div>
+        <div class="member-card hidden">
+          <div class="member-avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <h3>Chris Lee</h3>
+          <p class="member-role">Training Head</p>
+        </div>
+        <div class="member-card hidden">
+          <div class="member-avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <h3>Lisa Chen</h3>
+          <p class="member-role">Web Developer</p>
+        </div>
+      </div>
+      <div class="members-btn-container">
+        <button class="show-more-btn" onclick="toggleMembers()">View All Members</button>
+      </div>
+    </div>
+  </section>
+
   <script>
+    function toggleMembers() {
+      const hiddenMembers = document.querySelectorAll('.member-card.hidden');
+      const btn = document.querySelector('.show-more-btn');
+      hiddenMembers.forEach(card => card.classList.toggle('hidden'));
+      btn.textContent = btn.textContent === 'View All Members' ? 'Show Less Members' : 'View All Members';
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
       const toggles = document.querySelectorAll('.navbar .dropdown-toggle');
 
