@@ -55,7 +55,7 @@ require_once __DIR__ . "/config/db.php";
         <a href="mailto:example@gmail.com">
           <i class="fa-solid fa-envelope"></i> Email
         </a>
-        <a href="#members-section" target="_blank" id="profile-icon">
+        <a href="index.php?page=profile_member" target="_blank" id="profile-icon">
           <i class="fa-solid fa-user"></i> 
         </a>
         <a href="#" class="theme-toggle" id="theme-toggle" title="Toggle Theme">

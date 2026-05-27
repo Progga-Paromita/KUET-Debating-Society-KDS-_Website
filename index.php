@@ -7,6 +7,10 @@ $pages = [
     "role_select_login" => "role_select_login.php",
     "signup_member" => "signup_member.php",
     "signup_admin" => "signup_admin.php",
+    "login_member" => "login_member.php",
+    "login_admin" => "login_admin.php",
+    "profile_member" => "profile_member.php",
+    "profile_admin" => "profile_admin.php",
     "calender" => "calender.php",
     "learn_more" => "learn_more.php"
 ];
@@ -23,6 +27,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['role'])) {
     } elseif ($_POST['role'] === "member") {
         $page = "signup_member";
     }
+}
+
+// Handle logout
+if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
+    session_destroy();
+    header("Location: index.php?page=home");
+    exit;
 }
 
 require_once __DIR__ . "/layout.php";
