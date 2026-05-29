@@ -1,9 +1,7 @@
+<section style="height: 150px;"></section>
 <?php
 require_once __DIR__ . "/config/db.php";
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 
 $full_name = "";
 $preferred_name = "";
@@ -17,49 +15,61 @@ $error = "";
 $success = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $full_name = trim($_POST['full_name'] ?? "");
-    $preferred_name = trim($_POST['preferred_name'] ?? "");
-    $roll = trim($_POST['roll'] ?? "");
-    $email = trim($_POST['email'] ?? "");
-    $phone = trim($_POST['phone'] ?? "");
-    $dept = trim($_POST['dept'] ?? "");
-    $semester = trim($_POST['semester'] ?? "");
+
+    $full_name = $_POST['full_name'] ?? "";
+    $preferred_name = $_POST['preferred_name'] ?? "";
+    $roll = $_POST['roll'] ?? "";
+    $email = $_POST['email'] ?? "";
+    $phone = $_POST['phone'] ?? "";
+    $dept = $_POST['dept'] ?? "";
+    $semester = $_POST['semester'] ?? "";
     $password = $_POST['password'] ?? "";
 
-    if ($full_name && $preferred_name && $roll && $email && $phone && $dept && $semester && $password) {
+    if (
+        $full_name != "" &&
+        $preferred_name != "" &&
+        $roll != "" &&
+        $email != "" &&
+        $phone != "" &&
+        $dept != "" &&
+        $semester != "" &&
+        $password != ""
+    ) {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         $stmt = mysqli_prepare(
             $connection,
-            "INSERT INTO kds_db.member_db
+            "INSERT INTO member_db
             (full_name, preferred_name, roll, email, phone, dept, semester, password)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
         );
 
-        if ($stmt) {
-            mysqli_stmt_bind_param(
-                $stmt,
-                "ssssssss",
-                $full_name,
-                $preferred_name,
-                $roll,
-                $email,
-                $phone,
-                $dept,
-                $semester,
-                $hashed_password
-            );
-
-            if (mysqli_stmt_execute($stmt)) {
-                $success = "✅ Registration successful! You can now log in.";
-            } else {
-                $error = "❌ Registration failed: " . mysqli_error($connection);
-            }
-
-            mysqli_stmt_close($stmt);
-        } else {
-            $error = "❌ Database error. Please try again.";
+        // ✅ VERY IMPORTANT FIX (same as admin file)
+        if (!$stmt) {
+            die("Prepare failed: " . mysqli_error($connection));
         }
+
+        mysqli_stmt_bind_param(
+            $stmt,
+            "ssssssss",
+            $full_name,
+            $preferred_name,
+            $roll,
+            $email,
+            $phone,
+            $dept,
+            $semester,
+            $hashed_password
+        );
+
+        if (mysqli_stmt_execute($stmt)) {
+            $success = "✅ Registration successful! You can now log in.";
+        } else {
+            $error = "❌ Registration failed: " . mysqli_error($connection);
+        }
+
+        mysqli_stmt_close($stmt);
+
     } else {
         $error = "❌ Please fill all required fields.";
     }
@@ -99,6 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <form class="member-register-form" method="POST">
             <div class="member-register-grid">
+
                 <div class="field field-full">
                     <label>Full Name</label>
                     <input type="text" name="full_name" value="<?php echo htmlspecialchars($full_name, ENT_QUOTES, 'UTF-8'); ?>" required>
@@ -136,14 +147,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 <div class="field field-full">
                     <label>Password</label>
-                    <input type="password" name="password" value="" required>
+                    <input type="password" name="password" required>
                 </div>
+
             </div>
 
             <div class="member-register-actions">
-                <button class="btn-primary role-submit-btn member-register-submit" type="submit">Create Account</button>
+                <button class="btn-primary role-submit-btn member-register-submit" type="submit">
+                    Create Account
+                </button>
+
                 <div class="member-register-hint">
-                    Already have an account? <a href="index.php?page=role_select_login" style="color: var(--green-dark); text-decoration: none; font-weight: 700;">Log in</a>
+                    Already have an account?
+                    <a href="index.php?page=role_select_login"
+                       style="color: var(--green-dark); text-decoration: none; font-weight: 700;">
+                        Log in
+                    </a>
                 </div>
             </div>
         </form>
@@ -152,5 +171,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="benefit"><i class="fa-solid fa-shield"></i> Your password is stored securely (hashed).</div>
             <div class="benefit"><i class="fa-solid fa-id-card"></i> We show your details on the profile page after login.</div>
         </div>
+
     </div>
 </div>

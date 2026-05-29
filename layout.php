@@ -130,12 +130,7 @@ require_once __DIR__ . "/config/db.php";
 
 <!-- DYNAMIC PART -->
 <main>
-  <div style="height: 300px;"></div>
-  <?php if (isset($connection) && $connection): ?>
-    <p style="color: green;">✅ Database Connected Successfully</p>
-<?php else: ?>
-    <p style="color: red;">❌ Database Connection Failed</p>
-<?php endif; ?>
+  <section style="height: 170px;"></section>
     <?php
         // If role_select posts (or redirects) to signup pages, this include will render the correct fragment.
         // No special handling needed besides ensuring $page is set correctly in index.php.

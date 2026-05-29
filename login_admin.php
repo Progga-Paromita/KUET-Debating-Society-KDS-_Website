@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Query to find admin by email
         $stmt = mysqli_prepare(
             $connection,
-            "SELECT id, full_name, email, password FROM kds_db.admin_db WHERE email = ? LIMIT 1"
+            "SELECT id, full_name, email, password FROM  admin_db WHERE email = ? LIMIT 1"
         );
 
         if ($stmt) {
