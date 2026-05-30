@@ -1,36 +1,75 @@
 <?php
-session_start();
+if (!isset($_SESSION['role']) && isset($_COOKIE['role'])) {
 
-$pages = [
-    "home" => "home.php",
-    "role_select" => "role_select.php",
-    "role_select_signin" => "role_select_signin.php",
-    "role_select_login" => "role_select_login.php",
-    "signup_member" => "signup_member.php",
-    "signup_admin" => "signup_admin.php",
-    "login_member" => "login_member.php",
-    "login_admin" => "login_admin.php",
-    "profile_member" => "profile_member.php",
-    "profile_admin" => "profile_admin.php",
-    "calender" => "calender.php",
-    "learn_more" => "learn_more.php"
-];
+    $_SESSION['role'] = $_COOKIE['role'];
+    $_SESSION['user_id'] = $_COOKIE['user_id'];
+}
+$page = $_GET['page'] ?? "home";
 
-$page = "home"; // default MUST be key
+include "includes/header.php";
 
-if (isset($_GET['page']) && array_key_exists($_GET['page'], $pages)) {
-    $page = (string)$_GET['page'];
+switch ($page) {
+    case "home":
+        include "pages/home.php";
+        break;
+
+    case "role_select":
+        include "pages/role_select.php";
+        break;
+
+    case "signup":
+        include "pages/signup.php";
+        break;
+
+    case "login":
+        include "pages/login.php";
+        break;
+
+    case "profile_admin":
+        include "pages/profile_admin.php";
+        break;
+
+    case "profile_member": 
+        include "pages/profile_member.php";
+         break;
+
+    case "logout":
+        include "pages/logout.php";
+        break;
+
+    case "admin_requests":
+        include "pages/admin_requests.php";
+        break;
+    case "edit_member":
+        include "pages/edit_member.php";
+        break;
+    case "edit_event":
+        include "pages/edit_event.php";
+        break;    
+    case "edit_resource":
+        include "pages/edit_resource.php";
+        break;
+    case "test_cookie":
+        include "pages/test_cookie.php";
+        break;
+    case "test_session":
+        include "pages/test_session.php";
+        break;
+    case "submit_query":
+        include "pages/submit_query.php";
+        break;
+    case "reply_query":
+        include "pages/reply_query.php";
+        break;
+    case "admin_queries":
+        include "pages/admin_queries.php";
+        break;
+    case "notif_count":
+        include "pages/notif_count.php";
+        break;
+    default:
+        echo "Page not found";
 }
 
-
-
-// Handle logout
-if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
-    session_destroy();
-    header("Location: index.php?page=home");
-    exit;
-}
-
-require_once __DIR__ . "/layout.php";
-
+include "includes/footer.php";
 ?>

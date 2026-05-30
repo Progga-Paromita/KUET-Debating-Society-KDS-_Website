@@ -1,8 +1,9 @@
 <?php
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-$connection = mysqli_connect("localhost", "root", "", "kds_db");
+session_start();   // ONLY ONCE HERE
 
-if (!$connection) {
-    die("Database connection failed: " . mysqli_connect_error());
+$conn = mysqli_connect("localhost", "root", "", "role_system");
+
+if (!$conn) {
+    die("DB connection failed");
 }
 ?>

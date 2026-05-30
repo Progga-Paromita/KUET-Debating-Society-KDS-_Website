@@ -1,3 +1,79 @@
+document.addEventListener("DOMContentLoaded", function () {
+
+    const buttons = document.querySelectorAll(".filter-btn");
+    const cards = document.querySelectorAll(".resource-card");
+
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+
+            // active button highlight
+            buttons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            const filter = btn.getAttribute("data-filter");
+
+            cards.forEach(card => {
+
+                if (filter === "all") {
+                    card.style.display = "block";
+                } else {
+                    if (card.getAttribute("data-category") === filter) {
+                        card.style.display = "block";
+                    } else {
+                        card.style.display = "none";
+                    }
+                }
+
+            });
+
+        });
+    });
+
+});
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const buttons = document.querySelectorAll(".filter-btn");
+    const cards = document.querySelectorAll(".event-card");
+
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+
+            // active button
+            buttons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            const filter = btn.getAttribute("data-filter");
+
+            cards.forEach(card => {
+
+                if (filter === "all") {
+                    card.style.display = "block";
+                } else {
+                    if (card.getAttribute("data-category") === filter) {
+                        card.style.display = "block";
+                    } else {
+                        card.style.display = "none";
+                    }
+                }
+
+            });
+
+        });
+    });
+
+});
+
+
+
+
+
+
+
+
 // Theme toggle functionality
 function initThemeToggle() {
   const themeToggle = document.getElementById('theme-toggle');
@@ -104,6 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
           const formData = new FormData(form);
           const res = await fetch(form.action, {
             method: 'POST',
+            headers: { 'Accept': 'application/json' },
             body: formData
           });
 
@@ -122,6 +199,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
           if (messageEl) messageEl.textContent = data.message;
           form.reset();
+        
+          // If there are no matching JS-only message elements (because the form is a normal HTML form),
+          // still submit behavior works because JSON is returned.
+
         });
       };
 
