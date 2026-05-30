@@ -68,6 +68,8 @@ if (isset($_POST['update'])) {
      UI PART
 ========================= -->
 
+
+<section style="height: 300px;"></section>
 <h2>Edit Event</h2>
 
 <?php if (!empty($event['image'])): ?>

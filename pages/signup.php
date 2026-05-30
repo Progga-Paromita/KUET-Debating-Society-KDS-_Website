@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
+<section style="height: 300px;"></section>
 <h2>Signup as <?= $role ?></h2>
 
 <form method="POST">

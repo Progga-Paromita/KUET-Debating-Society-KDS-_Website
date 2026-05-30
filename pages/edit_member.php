@@ -45,6 +45,8 @@ if (isset($_POST['update'])) {
 }
 ?>
 
+
+<section style="height: 300px;"></section>
 <h2>Edit Member</h2>
 
 <form method="POST">

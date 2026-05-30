@@ -39,6 +39,8 @@ if (isset($_GET['reject'])) {
 }
 ?>
 
+
+<section style="height: 300px;"></section>
 <h2>Pending Admin Requests</h2>
 
 <?php

@@ -30,6 +30,8 @@ if (isset($_POST['update'])) {
 }
 ?>
 
+
+<section style="height: 300px;"></section>
 <h2>Edit Resource</h2>
 
 <form method="POST">
