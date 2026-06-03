@@ -120,232 +120,270 @@ if (isset($_GET['delete'])) {
 
 
 <section style="height: 300px;"></section>
-<h2>Admin Profile</h2>
 <?php
-$notif_result = mysqli_query($conn, "SELECT COUNT(*) as total FROM queries WHERE is_read = 0");
-$notif_count = mysqli_fetch_assoc($notif_result)['total'];
+/* ============================================================
+   ADMIN PROFILE PAGE  —  profile_admin.php
+   Requires: admin.css in the same directory (or adjust path)
+   ============================================================ */
 ?>
-<a href="index.php?page=admin_requests">Admin Requests</a><br>
-<?php
-$notif_result = mysqli_query($conn, "SELECT COUNT(*) as total FROM queries WHERE is_read = 0");
-$notif_count = mysqli_fetch_assoc($notif_result)['total'];
-?>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
 
+<div class="admin-wrap">
 
-<a href="index.php?page=admin_queries" style="position:relative;">
-    🔔 Notifications
+  <!-- ── Admin Info Bar ──────────────────────────────────── -->
+  <div class="panel">
+    <div class="admin-bar">
+      <div class="admin-identity">
+        <div class="admin-avatar">
+          <?= strtoupper(substr($admin['name'], 0, 1)) ?>
+        </div>
+        <div class="admin-details">
+          <div class="name"><?= htmlspecialchars($admin['name']) ?></div>
+          <div class="email"><?= htmlspecialchars($admin['email']) ?></div>
+        </div>
+      </div>
+      <div class="admin-nav">
+        <a href="index.php?page=admin_requests" class="nav-btn">
+          📋 Admin Requests
+        </a>
+        <?php
+          $notif_result = mysqli_query($conn, "SELECT COUNT(*) as total FROM queries WHERE is_read = 0");
+          $notif_count  = mysqli_fetch_assoc($notif_result)['total'];
+        ?>
+        <a href="index.php?page=admin_queries" class="nav-btn">
+          🔔 Notifications
+          <?php if ($notif_count > 0): ?>
+            <span class="notif-badge"><?= $notif_count ?></span>
+          <?php endif; ?>
+        </a>
+      </div>
+    </div>
+  </div>
 
-    <?php if ($notif_count > 0) { ?>
-        <span style="
-            background:red;
-            color:white;
-            border-radius:50%;
-            padding:2px 7px;
-            font-size:12px;
-            position:absolute;
-            top:-8px;
-            right:-10px;
-        ">
-            <?= $notif_count ?>
-        </span>
-    <?php } ?>
-</a>
-<p><b>Name:</b> <?= $admin['name'] ?></p>
-<p><b>Email:</b> <?= $admin['email'] ?></p>
+  <!-- ── Add Event ───────────────────────────────────────── -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-header-icon">📅</div>
+      <h2>Add New Event</h2>
+    </div>
+    <div class="panel-body">
+      <form method="POST" enctype="multipart/form-data">
+        <div class="form-grid">
+          <div class="field full">
+            <label>Event Title</label>
+            <input name="title" placeholder="e.g. Annual Debate Championship" required>
+          </div>
+          <div class="field">
+            <label>Category</label>
+            <select name="category" required>
+              <option value="">Select Category</option>
+              <option value="inter-university">Inter-university</option>
+              <option value="workshop">Workshop</option>
+              <option value="competition">Competition</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Event Date</label>
+            <input type="date" name="event_date" required>
+          </div>
+          <div class="field full">
+            <label>Description</label>
+            <textarea name="description" placeholder="Brief description of the event..."></textarea>
+          </div>
+          <div class="field full">
+            <label>Event Poster</label>
+            <input type="file" name="image" accept="image/*">
+          </div>
+        </div>
+        <div style="margin-top:18px;">
+          <button class="btn btn-primary" name="add_event">＋ Add Event</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-<hr>
-
-<!-- =========================
-     ADD EVENT
-========================= -->
-<h2>📅 Add New Event</h2>
-
-<form method="POST" enctype="multipart/form-data">
-    <input class="form-control mb-2" name="title" placeholder="Event Title" required>
-
-    <select class="form-control mb-2" name="category" required>
-    <option value="">Select Category</option>
-    <option value="inter-university">Inter-university</option>
-    <option value="workshop">Workshop</option>
-    <option value="competition">Competition</option>
-</select>
-
-    <textarea class="form-control mb-2" name="description"></textarea>
-
-    <input class="form-control mb-2" type="date" name="event_date" required>
-
-    <input class="form-control mb-2" type="file" name="image" accept="image/*">
-
-    <button class="btn btn-primary" name="add_event">Add Event</button>
-</form>
-
-<!-- =========================
-     MANAGE EVENTS
-========================= -->
-<h2>📅 Manage Events</h2>
-
-<?php
-$events = mysqli_query($conn, "SELECT * FROM events ORDER BY event_date DESC");
-
-echo "<table border='1' cellpadding='10'>
-<tr>
-<th>ID</th>
-<th>Title</th>
-<th>Date</th>
-<th>Status</th>
-<th>Action</th>
-<th>Poster</th>
-</tr>";
-
-while ($e = $events->fetch_assoc()) {
-
-    echo "<tr>
-        <td>{$e['id']}</td>
-        <td>{$e['title']}</td>
-        <td>{$e['event_date']}</td>
-        <td>{$e['status']}</td>
-
-        <td>
-            <a class='btn btn-sm btn-warning' href='index.php?page=edit_event&id={$e['id']}'>Edit</a>
-            <a class='btn btn-sm btn-danger' href='index.php?page=profile_admin&delete_event={$e['id']}'>Delete</a>
-        </td>
-
-        <td>";
-
-    if (!empty($e['image'])) {
-        echo "<img src='uploads/{$e['image']}' width='80'>";
-    } else {
-        echo "No Image";
-    }
-
-    echo "</td>
-    </tr>";
-}
-
-echo "</table>";
-?>
-
-<hr>
-
-<!-- =========================
-     ADD RESOURCE
-========================= -->
-<h2>📚 Add Resource</h2>
-
-<form method="POST" enctype="multipart/form-data">
-
-    <input class="form-control mb-2" name="title" placeholder="Title" required>
-
-    <!-- CATEGORY -->
-    <select class="form-control mb-2" name="category" required>
-        <option value="General">General</option>
-        <option value="Speech">Speech</option>
-        <option value="Debate Guide">Debate Guide</option>
-        <option value="Case Study">Case Study</option>
-        <option value="Video">Video</option>
-    </select>
-
-    <input class="form-control mb-2" name="link" placeholder="Link (optional)">
-
-    <input class="form-control mb-2" type="file" name="file" accept=".pdf,.doc,.ppt,.mp4">
-
-    <button class="btn btn-success" name="add_resource">Add Resource</button>
-
-</form>
-
-<!-- =========================
-     MANAGE RESOURCES
-========================= -->
-<h2>📚 Manage Resources</h2>
-
-<?php
-$categories = ["General", "Speech", "Debate Guide", "Case Study", "Video"];
-
-foreach ($categories as $cat) {
-
-    echo "<h5 style='margin-top:20px;'>📁 $cat</h5>";
-
-    $res = $conn->query("SELECT * FROM resources WHERE category='$cat' ORDER BY id DESC");
-
-    if ($res->num_rows > 0) {
-
-        echo "<table class='table table-bordered'>
-        <tr>
+  <!-- ── Manage Events ───────────────────────────────────── -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-header-icon">📋</div>
+      <h2>Manage Events</h2>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
             <th>Title</th>
-            <th>Content</th>
-            <th>Action</th>
-        </tr>";
+            <th>Date</th>
+            <th>Status</th>
+            <th>Poster</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        <?php
+          $events = mysqli_query($conn, "SELECT * FROM events ORDER BY event_date DESC");
+          while ($e = $events->fetch_assoc()):
+            $status_class = match($e['status']) {
+              'active'   => 'status-active',
+              'upcoming' => 'status-upcoming',
+              default    => 'status-past',
+            };
+        ?>
+          <tr>
+            <td class="id-cell">#<?= $e['id'] ?></td>
+            <td><strong><?= htmlspecialchars($e['title']) ?></strong></td>
+            <td><?= date('M j, Y', strtotime($e['event_date'])) ?></td>
+            <td><span class="status-badge <?= $status_class ?>"><?= $e['status'] ?></span></td>
+            <td>
+              <?php if (!empty($e['image'])): ?>
+                <img src="uploads/<?= htmlspecialchars($e['image']) ?>" alt="poster">
+              <?php else: ?>
+                <span class="no-img">No image</span>
+              <?php endif; ?>
+            </td>
+            <td>
+              <div class="row-actions">
+                <a class="act-btn act-edit" href="index.php?page=edit_event&id=<?= $e['id'] ?>">✏ Edit</a>
+                <a class="act-btn act-delete"
+                   href="index.php?page=profile_admin&delete_event=<?= $e['id'] ?>"
+                   onclick="return confirm('Delete this event?')">🗑 Delete</a>
+              </div>
+            </td>
+          </tr>
+        <?php endwhile; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-        while ($r = $res->fetch_assoc()) {
+  <!-- ── Add Resource ────────────────────────────────────── -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-header-icon">📚</div>
+      <h2>Add Resource</h2>
+    </div>
+    <div class="panel-body">
+      <form method="POST" enctype="multipart/form-data">
+        <div class="form-grid">
+          <div class="field full">
+            <label>Title</label>
+            <input name="title" placeholder="Resource title" required>
+          </div>
+          <div class="field">
+            <label>Category</label>
+            <select name="category" required>
+              <option value="General">General</option>
+              <option value="Speech">Speech</option>
+              <option value="Debate Guide">Debate Guide</option>
+              <option value="Case Study">Case Study</option>
+              <option value="Video">Video</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Link (optional)</label>
+            <input name="link" placeholder="https://...">
+          </div>
+          <div class="field full">
+            <label>Upload File</label>
+            <input type="file" name="file" accept=".pdf,.doc,.ppt,.mp4">
+          </div>
+        </div>
+        <div style="margin-top:18px;">
+          <button class="btn btn-success" name="add_resource">＋ Add Resource</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-    echo "<tr>
-        <td>{$r['id']}</td>
-        <td>
-            <b>{$r['title']}</b><br>
-            <small><i>Category: {$r['category']}</i></small>
-        </td>
+  <!-- ── Manage Resources ────────────────────────────────── -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-header-icon">📁</div>
+      <h2>Manage Resources</h2>
+    </div>
+    <div class="panel-body">
+      <?php
+        $categories = ["General", "Speech", "Debate Guide", "Case Study", "Video"];
+        foreach ($categories as $cat):
+          $res = $conn->query("SELECT * FROM resources WHERE category='$cat' ORDER BY id DESC");
+      ?>
+      <div class="resource-category">
+        <div class="cat-label"><span></span><?= $cat ?></div>
+        <?php if ($res->num_rows > 0): ?>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+            <?php while ($r = $res->fetch_assoc()): ?>
+              <tr>
+                <td>
+                  <strong><?= htmlspecialchars($r['title']) ?></strong>
+                  <div class="resource-id">#<?= $r['id'] ?></div>
+                </td>
+                <td>
+                  <?php if (!empty($r['link'])): ?>
+                    <a class="resource-link" href="<?= htmlspecialchars($r['link']) ?>" target="_blank">🔗 Open Link</a><br>
+                  <?php endif; ?>
+                  <?php if (!empty($r['file'])): ?>
+                    <a class="resource-link" href="uploads/resources/<?= htmlspecialchars($r['file']) ?>" target="_blank">⬇ Download File</a>
+                  <?php endif; ?>
+                </td>
+                <td>
+                  <div class="row-actions">
+                    <a class="act-btn act-edit" href="index.php?page=edit_resource&id=<?= $r['id'] ?>">✏ Edit</a>
+                    <a class="act-btn act-delete"
+                       href="index.php?page=profile_admin&delete_resource=<?= $r['id'] ?>"
+                       onclick="return confirm('Delete this resource?')">🗑 Delete</a>
+                  </div>
+                </td>
+              </tr>
+            <?php endwhile; ?>
+            </tbody>
+          </table>
+        <?php else: ?>
+          <p class="empty-cat">No resources in this category yet.</p>
+        <?php endif; ?>
+      </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
 
-        <td>";
+  <!-- ── Member Management ───────────────────────────────── -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-header-icon">👥</div>
+      <h2>Member Management</h2>
+    </div>
+    <div class="panel-body">
+      <div class="members-grid">
+      <?php
+        $result = mysqli_query($conn, "SELECT * FROM member");
+        while ($row = mysqli_fetch_assoc($result)):
+          $parts    = explode(' ', trim($row['name']));
+          $initials = strtoupper(substr($parts[0], 0, 1) . (isset($parts[1]) ? substr($parts[1], 0, 1) : ''));
+      ?>
+        <div class="member-card">
+          <div class="member-avatar"><?= $initials ?></div>
+          <h3><?= htmlspecialchars($row['name']) ?></h3>
+          <div class="member-email"><?= htmlspecialchars($row['email']) ?></div>
+          <div class="member-id">ID #<?= $row['id'] ?></div>
+          <div class="member-actions">
+            <a class="m-edit" href="index.php?page=edit_member&id=<?= $row['id'] ?>">✏ Edit</a>
+            <a class="m-delete"
+               href="index.php?page=profile_admin&delete=<?= $row['id'] ?>"
+               onclick="return confirm('Delete this member?')">🗑 Delete</a>
+          </div>
+        </div>
+      <?php endwhile; ?>
+      </div>
+    </div>
+  </div>
 
-    // LINK
-    if (!empty($r['link'])) {
-        echo "<a href='{$r['link']}' target='_blank'>Open Link</a><br>";
-    }
-
-    // FILE
-    if (!empty($r['file'])) {
-        echo "<a href='uploads/resources/{$r['file']}' target='_blank'>Download File</a>";
-    }
-
-    echo "</td>
-
-        <td>
-            <a class='btn btn-sm btn-warning' href='index.php?page=edit_resource&id={$r['id']}'>Edit</a>
-            <a class='btn btn-sm btn-danger' href='index.php?page=profile_admin&delete_resource={$r['id']}'>Delete</a>
-        </td>
-    </tr>";
-}
-
-        echo "</table>";
-    } else {
-        echo "<p>No resources in $cat</p>";
-    }
-}
-?>
-
-<hr>
-
-<!-- =========================
-     MEMBER MANAGEMENT
-========================= -->
-<h2>👥 Member Management</h2>
-
-<?php
-$result = mysqli_query($conn, "SELECT * FROM member");
-
-echo "<table border='1' cellpadding='10'>
-<tr>
-<th>ID</th>
-<th>Name</th>
-<th>Email</th>
-<th>Action</th>
-</tr>";
-
-while ($row = mysqli_fetch_assoc($result)) {
-    echo "<tr>
-        <td>{$row['id']}</td>
-        <td>{$row['name']}</td>
-        <td>{$row['email']}</td>
-        <td>
-            <a href='index.php?page=edit_member&id={$row['id']}'>Edit</a> |
-            <a href='index.php?page=profile_admin&delete={$row['id']}'
-               onclick='return confirm(\"Delete?\")'>Delete</a>
-        </td>
-    </tr>";
-}
-
-echo "</table>";
-?>
-
-
-<hr>
+</div><!-- /admin-wrap -->
