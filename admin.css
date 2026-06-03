@@ -1,49 +1,50 @@
 
-/* ── Reset (scoped to admin) ──────────────────────────── */
+/* Admin page styling aligned with pages/profile_admin.php + existing theme tokens in style.css */
+
+/* Reset (scoped) */
 .admin-wrap *,
 .admin-wrap *::before,
 .admin-wrap *::after {
   box-sizing: border-box;
 }
 
-/* ── Layout wrapper ───────────────────────────────────── */
+/* Layout wrapper */
 .admin-wrap {
   max-width: 1100px;
   margin: 0 auto;
   padding: 40px 20px 80px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 26px;
   font-family: 'Inter', sans-serif;
-  background: var(--admin-bg);
-  color: var(--admin-text);
   min-height: 100vh;
 }
 
-/* ── Panel card (matches .member-card / .resource-card style) */
-.admin-panel {
-  background: var(--admin-surface);
-  border: 1px solid var(--admin-border);
-  border-radius: var(--admin-radius);
+/* Panel */
+.panel {
+  background: var(--cream);
+  border: 1px solid var(--border-light);
+  border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 10px 30px var(--admin-shadow);
-  transition: var(--admin-transition);
+  box-shadow: 0 10px 30px var(--shadow-color);
 }
 
-/* ── Panel header ─────────────────────────────────────── */
-.admin-panel-header {
+html.dark .panel {
+  background: #0b1220;
+}
+
+.panel-header {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 22px 30px;
-  border-bottom: 1px solid var(--admin-border);
-  background: var(--admin-surface);
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border-light);
 }
 
-.admin-panel-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: var(--admin-radius-sm);
+.panel-header-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
   background: rgba(143, 174, 156, 0.18);
   border: 1px solid rgba(143, 174, 156, 0.35);
   display: flex;
@@ -53,26 +54,26 @@
   flex-shrink: 0;
 }
 
-.admin-panel-header h2 {
+.panel-header h2 {
+  margin: 0;
   font-family: 'Playfair Display', serif;
   font-size: 22px;
-  font-weight: 700;
-  color: var(--admin-text);
-  margin: 0;
+  font-weight: 800;
+  color: var(--text-dark);
 }
 
-.admin-panel-body {
-  padding: 30px;
+.panel-body {
+  padding: 22px 24px;
 }
 
-/* ── Admin info bar ───────────────────────────────────── */
+/* Admin bar (top inside first panel) */
 .admin-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 20px;
-  padding: 24px 30px;
+  gap: 16px;
+  padding: 18px 24px;
 }
 
 .admin-identity {
@@ -85,32 +86,48 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: var(--admin-green);
+  background: var(--green);
   color: #fff;
   font-family: 'Playfair Display', serif;
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 4px 12px var(--admin-shadow);
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
+.admin-details .name {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-dark);
+  line-height: 1.2;
+}
+
+.admin-details .email {
+  font-size: 13px;
+  color: var(--right-p-color);
+  font-family: 'DM Mono', monospace;
+  margin-top: 2px;
+}
+
+/* profile_admin.php uses .admin-details .admin-name and .admin-email */
 .admin-details .admin-name {
   font-family: 'Playfair Display', serif;
   font-size: 18px;
-  font-weight: 700;
-  color: var(--admin-text);
+  font-weight: 800;
+  color: var(--text-dark);
   line-height: 1.2;
 }
 
 .admin-details .admin-email {
   font-size: 13px;
-  color: var(--admin-text-2);
-  font-family: var(--admin-mono);
+  color: var(--right-p-color);
+  font-family: 'DM Mono', monospace;
   margin-top: 2px;
 }
+
 
 .admin-nav {
   display: flex;
@@ -118,31 +135,28 @@
   flex-wrap: wrap;
 }
 
-/* Nav buttons — match your .topbar-right a style */
-.admin-nav-btn {
+.nav-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--admin-green);
+  background: var(--green);
   color: var(--font-color, #2b2b2b);
-  padding: 10px 18px;
+  padding: 10px 16px;
   border-radius: 20px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
-  transition: var(--admin-transition);
+  transition: 0.2s;
   position: relative;
-  font-family: 'Inter', sans-serif;
   border: none;
-  cursor: pointer;
 }
 
-.admin-nav-btn:hover {
-  background: var(--admin-green-dk);
+.nav-btn:hover {
+  background: var(--green-dark);
   transform: translateY(-2px);
 }
 
-.admin-notif-badge {
+.notif-badge {
   position: absolute;
   top: -8px;
   right: -8px;
@@ -151,300 +165,330 @@
   border-radius: 50px;
   padding: 2px 7px;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   min-width: 20px;
   text-align: center;
   line-height: 1.5;
 }
 
-/* ── Forms ────────────────────────────────────────────── */
-.admin-form-grid {
+/* Forms */
+.form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 18px;
 }
 
-.admin-form-grid .admin-field-full {
+.field.full {
   grid-column: 1 / -1;
 }
 
-/* Matches your .form-group / .field pattern */
-.admin-field {
+.field {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.admin-field label {
-  font-weight: 600;
+.field label {
+  font-weight: 650;
   font-size: 13px;
-  color: var(--admin-text);
+  color: var(--text-dark);
   letter-spacing: 0.02em;
 }
 
-.admin-field input,
-.admin-field select,
-.admin-field textarea {
-  padding: 14px 18px;
-  border: 2px solid var(--admin-border);
-  border-radius: var(--admin-radius-md);
+.field input,
+.field select,
+.field textarea {
+  padding: 14px 16px;
+  border: 2px solid var(--border-light);
+  border-radius: 12px;
   font-size: 15px;
-  font-family: 'Inter', sans-serif;
-  color: var(--admin-text);
-  background: var(--admin-white);
-  transition: var(--admin-transition);
+  background: var(--white);
+  color: var(--text-dark);
+  transition: 0.2s;
   outline: none;
-  appearance: none;
 }
 
-.admin-field input:focus,
-.admin-field select:focus,
-.admin-field textarea:focus {
-  border-color: var(--admin-green);
-  box-shadow: 0 0 0 3px rgba(143, 174, 156, 0.18);
-}
-
-.admin-field textarea {
+.field textarea {
   resize: vertical;
   min-height: 90px;
   line-height: 1.6;
 }
 
-.admin-field input[type="file"] {
+.field input[type="file"] {
   padding: 10px 14px;
-  cursor: pointer;
   font-size: 14px;
+  cursor: pointer;
 }
 
-/* ── Buttons — match your .btn-primary / .btn-secondary ── */
-.admin-btn {
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(143, 174, 156, 0.18);
+}
+
+html.dark .field input,
+html.dark .field select,
+html.dark .field textarea {
+  background: #111827;
+}
+
+/* Buttons: reuse existing .btn primary/success styles */
+.btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 12px 28px;
+  padding: 14px 28px;
   border-radius: 30px;
   font-family: 'Inter', sans-serif;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   border: none;
-  transition: var(--admin-transition);
   text-decoration: none;
+  transition: 0.2s;
 }
 
-.admin-btn-primary {
-  background: var(--admin-green);
-  color: #fff;
+/* Fallbacks if profile_admin uses .btn-primary / .btn-success */
+.btn-primary {
+  background: var(--green);
+  color: var(--white);
 }
-.admin-btn-primary:hover {
-  background: var(--admin-green-dkr);
+
+.btn-primary:hover {
+  background: var(--green-dark-darker);
   transform: translateY(-2px);
 }
 
-.admin-btn-success {
-  background: var(--admin-info);
-  color: #fff;
+.btn-success {
+  background: var(--green-dark);
+  color: var(--white);
 }
-.admin-btn-success:hover {
-  background: #154360;
+
+.btn-success:hover {
+  background: var(--green-dark-darker);
   transform: translateY(-2px);
 }
 
-/* ── Data table ───────────────────────────────────────── */
-.admin-table-wrap {
-  overflow-x: auto;
-}
-
-.admin-table {
+/* Table */
+.data-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
   font-family: 'Inter', sans-serif;
 }
 
-.admin-table th {
+.data-table th {
   text-align: left;
   padding: 12px 16px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: var(--admin-text-2);
+  color: var(--right-p-color);
   background: rgba(143, 174, 156, 0.1);
-  border-bottom: 1px solid var(--admin-border);
+  border-bottom: 1px solid var(--border-light);
   white-space: nowrap;
 }
 
-.admin-table td {
+.data-table td {
   padding: 14px 16px;
-  border-bottom: 1px solid var(--admin-border);
+  border-bottom: 1px solid var(--border-light);
   vertical-align: middle;
-  color: var(--admin-text);
+  color: var(--text-dark);
 }
 
-.admin-table tr:last-child td {
+.data-table tr:last-child td {
   border-bottom: none;
 }
 
-.admin-table tr:hover td {
+.data-table tr:hover td {
   background: rgba(143, 174, 156, 0.06);
 }
 
-.admin-table img {
+.data-table img {
   width: 80px;
   height: 56px;
   object-fit: cover;
-  border-radius: var(--admin-radius-sm);
-  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
 }
 
-.admin-no-img {
+.no-img {
   font-size: 12px;
-  color: var(--admin-text-3);
+  color: var(--right-p-color);
   font-style: italic;
 }
 
-.admin-cell-id {
-  color: var(--admin-text-3);
-  font-family: var(--admin-mono);
+.id-cell {
+  color: var(--right-p-color);
+  font-family: 'DM Mono', monospace;
   font-size: 12px;
 }
 
-/* ── Status badges — match your .event-category / .event-status */
-.admin-badge {
+/* Status badge */
+.status-badge {
   display: inline-block;
   padding: 5px 14px;
   border-radius: 20px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: capitalize;
   letter-spacing: 0.03em;
+  white-space: nowrap;
 }
 
-.admin-badge-active   { background: var(--admin-green);    color: #fff; }
-.admin-badge-upcoming { background: var(--admin-green-dk); color: #fff; }
-.admin-badge-past     { background: var(--admin-border);   color: var(--admin-text-2); }
+.status-active {
+  background: var(--green);
+  color: #fff;
+}
 
-/* ── Row action buttons ───────────────────────────────── */
-.admin-row-actions {
+.status-upcoming {
+  background: var(--green-dark);
+  color: #fff;
+}
+
+.status-past {
+  background: var(--border-light);
+  color: var(--text-dark);
+}
+
+/* Row actions */
+.row-actions {
   display: flex;
   gap: 8px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
-.admin-act-btn {
+.act-btn {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
+  gap: 6px;
   padding: 6px 14px;
   border-radius: 20px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 800;
   text-decoration: none;
-  transition: var(--admin-transition);
+  transition: 0.2s;
   border: none;
-  font-family: 'Inter', sans-serif;
   cursor: pointer;
 }
 
-.admin-act-edit {
-  background: var(--admin-warn-bg);
-  color: var(--admin-warn);
+.act-edit {
+  background: rgba(245, 208, 84, 0.35);
+  color: #7a5a00;
 }
-.admin-act-edit:hover {
+
+.act-edit:hover {
   background: #fde8b0;
   transform: translateY(-1px);
 }
 
-.admin-act-delete {
-  background: var(--admin-danger-bg);
-  color: var(--admin-danger);
+.act-delete {
+  background: rgba(239, 68, 68, 0.15);
+  color: #b91c1c;
 }
-.admin-act-delete:hover {
+
+.act-delete:hover {
   background: #fad4d4;
   transform: translateY(-1px);
 }
 
-/* ── Resources ────────────────────────────────────────── */
-.admin-resource-cat {
+/* Resources */
+.resource-category {
   margin-bottom: 32px;
 }
-.admin-resource-cat:last-child { margin-bottom: 0; }
 
-.admin-cat-label {
+.resource-category:last-child {
+  margin-bottom: 0;
+}
+
+.cat-label {
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--admin-text-2);
+  color: var(--right-p-color);
   margin-bottom: 12px;
 }
 
-.admin-cat-dot {
+.cat-label span {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--admin-green);
+  background: var(--green);
   flex-shrink: 0;
 }
 
-.admin-resource-link {
+.resource-link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  color: var(--admin-info);
+  color: var(--green-dark);
   text-decoration: none;
-  font-weight: 500;
-  transition: var(--admin-transition);
-}
-.admin-resource-link:hover {
-  text-decoration: underline;
-  color: var(--admin-green-dks);
+  font-weight: 700;
+  transition: 0.2s;
 }
 
-.admin-empty {
+.resource-link:hover {
+  text-decoration: underline;
+  color: var(--green-dark-darker);
+}
+
+.empty-cat {
   font-size: 13px;
-  color: var(--admin-text-3);
+  color: var(--right-p-color);
   font-style: italic;
   padding: 10px 0;
 }
 
-/* ── Members grid — extends your .members-grid pattern ─── */
-.admin-members-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 30px;
+.resource-id {
+  font-size: 12px;
+  color: var(--right-p-color);
+  font-family: 'DM Mono', monospace;
+  margin-top: 6px;
 }
 
-/* Matches your .member-card exactly, + action buttons */
-.admin-member-card {
-  background: var(--admin-white);
+/* Members grid */
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.member-card {
+  background: var(--white);
   padding: 36px 26px 26px;
-  border-radius: var(--admin-radius);
+  border-radius: 22px;
   text-align: center;
-  box-shadow: 0 10px 30px var(--admin-shadow);
-  transition: var(--admin-transition);
-  border: 1px solid var(--admin-border);
+  box-shadow: 0 10px 30px var(--shadow-color);
+  transition: 0.2s;
+  border: 1px solid var(--border-light);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
 }
 
-.admin-member-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px var(--admin-shadow);
+.member-card:hover {
+  transform: translateY(-8px);
 }
 
-/* Matches your .member-avatar */
-.admin-member-avatar {
+html.dark .member-card {
+  background: #111827;
+}
+
+.member-avatar {
   width: 80px;
   height: 80px;
-  background: var(--admin-green);
+  background: var(--green);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -452,135 +496,117 @@
   margin: 0 auto 16px;
   font-family: 'Playfair Display', serif;
   font-size: 28px;
-  font-weight: 700;
+  font-weight: 900;
   color: #fff;
-  box-shadow: 0 4px 12px var(--admin-shadow);
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
-/* Matches your .member-card h3 */
-.admin-member-card h3 {
+.member-card h3 {
   font-family: 'Playfair Display', serif;
   font-size: 20px;
-  font-weight: 700;
-  color: var(--admin-text);
+  font-weight: 900;
+  color: var(--text-dark);
   margin: 0;
 }
 
-.admin-member-email {
+.member-email {
   font-size: 12px;
-  color: var(--admin-text-2);
-  font-family: var(--admin-mono);
+  color: var(--right-p-color);
+  font-family: 'DM Mono', monospace;
   word-break: break-all;
   margin-bottom: 6px;
 }
 
-/* Matches your .member-role style */
-.admin-member-id {
+.member-id {
   font-size: 11px;
-  color: var(--admin-green-dk);
-  font-weight: 600;
+  color: var(--green-dark);
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin-bottom: 16px;
 }
 
-.admin-member-actions {
+.member-actions {
   display: flex;
   gap: 10px;
   width: 100%;
   margin-top: auto;
 }
 
-.admin-m-edit,
-.admin-m-delete {
+.m-edit,
+.m-delete {
   flex: 1;
   padding: 9px 10px;
   border-radius: 20px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 900;
   text-decoration: none;
   text-align: center;
-  transition: var(--admin-transition);
+  transition: 0.2s;
   border: none;
-  font-family: 'Inter', sans-serif;
   cursor: pointer;
 }
 
-.admin-m-edit {
-  background: var(--admin-warn-bg);
-  color: var(--admin-warn);
+.m-edit {
+  background: rgba(245, 208, 84, 0.35);
+  color: #7a5a00;
 }
-.admin-m-edit:hover {
+
+.m-edit:hover {
   background: #fde8b0;
   transform: translateY(-2px);
 }
 
-.admin-m-delete {
-  background: var(--admin-danger-bg);
-  color: var(--admin-danger);
+.m-delete {
+  background: rgba(239, 68, 68, 0.15);
+  color: #b91c1c;
 }
-.admin-m-delete:hover {
+
+.m-delete:hover {
   background: #fad4d4;
   transform: translateY(-2px);
 }
 
-/* ── Responsive — matches your @media (max-width: 768px) ─ */
+/* Responsive */
 @media (max-width: 768px) {
   .admin-wrap {
     padding: 20px 12px 60px;
-    gap: 24px;
   }
 
-  .admin-panel-body {
-    padding: 18px;
+  .panel-body {
+    padding: 18px 16px;
   }
 
-  .admin-panel-header {
+  .panel-header {
     padding: 16px 18px;
   }
 
   .admin-bar {
     flex-direction: column;
     align-items: flex-start;
-    padding: 18px;
-    gap: 16px;
   }
 
-  .admin-form-grid {
+  .form-grid {
     grid-template-columns: 1fr;
   }
 
-  .admin-table th,
-  .admin-table td {
-    padding: 10px 12px;
-    font-size: 13px;
-  }
-
-  .admin-members-grid {
+  .members-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
   }
 
-  .admin-panel-header h2 {
-    font-size: 18px;
-  }
-
-  .admin-nav {
-    width: 100%;
-  }
-
-  .admin-nav-btn {
+  .nav-btn {
     flex: 1;
     justify-content: center;
   }
 }
 
 @media (max-width: 480px) {
-  .admin-members-grid {
+  .members-grid {
     grid-template-columns: 1fr;
   }
 
-  .admin-member-card {
+  .member-card {
     padding: 28px 20px 20px;
   }
 }
+
