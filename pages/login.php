@@ -79,17 +79,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 <section style="height: 300px;"></section>
-<h2>Login</h2>
 
-<form method="POST">
-    <input name="email" placeholder="Email" required><br><br>
-    <input name="password" type="password" placeholder="Password" required><br><br>
+<div class="member-register-wrap" style="padding-top: 70px;">
+  <div class="member-register-card">
+    <div class="member-register-header">
+      <div class="member-register-badge">🔐 Welcome Back</div>
+      <h2 style="margin-bottom: 6px;">Login</h2>
+      <div class="member-register-subtitle">Sign in to access your dashboard and saved updates.</div>
+    </div>
 
-    <label>
-        <input type="checkbox" name="remember">
-        Remember Me
-    </label>
+    <form class="member-register-form" method="POST">
+      <div class="member-register-grid" style="grid-template-columns: 1fr; margin-top: 0;">
+        <div class="form-group" style="display:flex; flex-direction:column; gap:8px;">
+          <label for="email">Email</label>
+          <input id="email" name="email" placeholder="you@example.com" type="email" required>
+        </div>
 
-    <br><br>
-    <button type="submit">Login</button>
-</form>
+        <div class="form-group" style="display:flex; flex-direction:column; gap:8px;">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" placeholder="Your password" required>
+        </div>
+
+        <div class="form-group" style="display:flex; flex-direction:column; gap:10px;">
+          <label style="display:flex; align-items:center; gap:10px; font-weight:700; color: var(--right-p-color);">
+            <input type="checkbox" name="remember">
+            Remember Me
+          </label>
+        </div>
+      </div>
+
+      <div class="member-register-actions" style="justify-content:flex-end; margin-top: 18px;">
+        <button class="btn btn-primary member-register-submit" type="submit">
+          ➜ Login
+        </button>
+      </div>
+    </form>
+   </div>
+</div> 
+

@@ -68,30 +68,68 @@ if (isset($_POST['update'])) {
      UI PART
 ========================= -->
 
-
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="edit_event.css">
 <section style="height: 300px;"></section>
-<h2>Edit Event</h2>
 
-<?php if (!empty($event['image'])): ?>
-    <p>Current Image:</p>
-    <img src="uploads/<?= htmlspecialchars($event['image']) ?>" width="120"><br><br>
-<?php endif; ?>
+<div class="panel-body-pro">
+  <div class="admin-page-wrap admin-page-centered">
 
-<form method="POST" enctype="multipart/form-data">
+    <div class="panel-header">
+      <div class="panel-header-icon">📅</div>
+      <h2 class="panel-title">Edit Event</h2>
+    </div>
 
-    <input type="text" name="title"
-           value="<?= htmlspecialchars($event['title']) ?>"
-           placeholder="Event Title" required><br><br>
+    <div class="panel-body">
 
-    <textarea name="description"
-              placeholder="Description"
-              required><?= htmlspecialchars($event['description']) ?></textarea><br><br>
+      <a class="admin-action-link" href="index.php?page=profile_admin">
+        ⬅ Back to Dashboard
+      </a>
 
-    <input type="date" name="event_date"
-           value="<?= $event['event_date'] ?>" required><br><br>
+      <?php if (!empty($event['image'])): ?>
+        <div class="current-poster">
+          <div class="poster-label">Current Poster</div>
+          <img src="uploads/<?= htmlspecialchars($event['image']) ?>" alt="Event Poster">
+        </div>
+      <?php endif; ?>
 
-    <input type="file" name="image"><br><br>
+      <form method="POST" enctype="multipart/form-data" class="event-form">
 
-    <button type="submit" name="update">Update Event</button>
+        <div class="form-grid">
 
-</form>
+          <div class="field">
+            <label>Event Title</label>
+            <input type="text" name="title"
+                   value="<?= htmlspecialchars($event['title']) ?>"
+                   placeholder="Event Title" required>
+          </div>
+
+          <div class="field">
+            <label>Event Date</label>
+            <input type="date" name="event_date"
+                   value="<?= htmlspecialchars($event['event_date']) ?>" required>
+          </div>
+
+          <div class="field full">
+            <label>Description</label>
+            <textarea name="description" required><?= htmlspecialchars($event['description']) ?></textarea>
+          </div>
+
+          <div class="field full">
+            <label>Change Poster (optional)</label>
+            <input type="file" name="image" accept="image/*">
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" name="update" class="btn btn-primary">
+            ✅ Update Event
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>

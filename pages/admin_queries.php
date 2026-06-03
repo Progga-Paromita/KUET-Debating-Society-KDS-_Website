@@ -62,89 +62,102 @@ $result = mysqli_query($conn, $query);
 ========================= -->
 
 <section style="height: 300px;"></section>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="notifications.css">
+<div class="admin-page-wrap admin-page-centered">
+  <div class="panel" style="margin:0;">
+    
+    <div class="panel-header">
+      <div class="panel-header-icon">🔔</div>
+      <h2 class="panel-title">Notifications</h2>
+    </div>
+    <!-- FILTER BUTTON GROUP -->
+<div class="filter-group">
 
-<a href="index.php?page=profile_admin">⬅ Back to Dashboard</a>
+  <a href="?page=admin_queries&filter=unread"
+     class="filter-pill <?= $filter=='unread' ? 'active' : '' ?>">
+     🔴 Unread
+  </a>
 
-<h2>🔔 Pro Notifications</h2>
+  <a href="?page=admin_queries&filter=read"
+     class="filter-pill <?= $filter=='read' ? 'active' : '' ?>">
+     🟢 Read
+  </a>
 
-<!-- FILTER LINKS -->
-<a href="?page=admin_queries&filter=unread"
-   style="<?= $filter=='unread' ? 'font-weight:bold;' : '' ?>">Unread</a> |
+  <a href="?page=admin_queries&filter=all"
+     class="filter-pill <?= $filter=='all' ? 'active' : '' ?>">
+     ⚪ All
+  </a>
 
-<a href="?page=admin_queries&filter=read"
-   style="<?= $filter=='read' ? 'font-weight:bold;' : '' ?>">Read</a> |
-
-<a href="?page=admin_queries&filter=all"
-   style="<?= $filter=='all' ? 'font-weight:bold;' : '' ?>">All</a>
-
-<hr>
+</div>
+    <div class="chat-container">
 
 <?php while ($q = mysqli_fetch_assoc($result)) { ?>
 
-<div style="border:1px solid #ccc;padding:15px;margin-bottom:15px;border-radius:8px;">
+  <div class="chat-card <?= $q['status']=='unread' ? 'unread' : '' ?>">
 
-    <!-- USER INFO -->
-    <b><?= htmlspecialchars($q['full_name']) ?></b> 
-    (<?= htmlspecialchars($q['roll']) ?>)<br>
+    <!-- Avatar -->
+    <div class="chat-avatar">
+      <?= strtoupper(substr(trim($q['full_name']), 0, 1)) ?>
+    </div>
 
-    <?= htmlspecialchars($q['department']) ?><br>
-    <?= htmlspecialchars($q['email']) ?><br><br>
+    <!-- Content -->
+    <div class="chat-content">
 
-    <!-- QUESTION -->
-    <p><?= htmlspecialchars($q['question']) ?></p>
+      <!-- Header -->
+      <div class="chat-header">
+        <div>
+          <div class="chat-name">
+            <?= htmlspecialchars($q['full_name']) ?> (<?= htmlspecialchars($q['roll']) ?>)
+          </div>
+          <div class="chat-meta">
+            <?= htmlspecialchars($q['department']) ?> · <?= htmlspecialchars($q['email']) ?>
+          </div>
+        </div>
 
-    <!-- STATUS BADGE -->
-    <?php if ($q['status'] == 'unread'): ?>
-        <span style="color:red;font-weight:bold;">● New</span>
-    <?php endif; ?>
+        <span class="chat-status <?= $q['status'] ?>">
+          <?= $q['status']=='unread' ? 'New' : 'Read' ?>
+        </span>
+      </div>
 
-    <br><br>
+      <!-- Message -->
+      <div class="chat-bubble">
+        📝 <?= htmlspecialchars($q['question']) ?>
+      </div>
 
-    <!-- TOGGLE BUTTON -->
-    <?php if ($q['status'] == 'unread') { ?>
+      <!-- Actions -->
+      <div class="chat-actions">
+        <?php if ($q['status']=='unread') { ?>
+          <a class="chat-btn green"
+             href="?page=admin_queries&read=<?= $q['id'] ?>&filter=<?= $filter ?>">
+             Mark Read
+          </a>
+        <?php } else { ?>
+          <a class="chat-btn green"
+             href="?page=admin_queries&unread=<?= $q['id'] ?>&filter=<?= $filter ?>">
+             Mark Unread
+          </a>
+        <?php } ?>
 
-        <a href="?page=admin_queries&read=<?= $q['id'] ?>&filter=<?= $filter ?>"
-           style="background:blue;color:white;padding:6px 10px;border-radius:4px;">
-           Mark as Read
+        <a class="chat-btn red"
+           href="?page=admin_queries&delete=<?= $q['id'] ?>&filter=<?= $filter ?>"
+           onclick="return confirm('Delete this query?')">
+           Delete
         </a>
+      </div>
 
-    <?php } else { ?>
-
-        <a href="?page=admin_queries&unread=<?= $q['id'] ?>&filter=<?= $filter ?>"
-           style="background:orange;color:white;padding:6px 10px;border-radius:4px;">
-           Mark as Unread
-        </a>
-
-    <?php } ?>
-
-    <br><br>
-
-    <!-- REPLY FORM -->
-    <form method="POST" action="index.php?page=reply_query">
+      <!-- Reply -->
+      <form method="POST" action="index.php?page=reply_query" class="reply-box">
         <input type="hidden" name="id" value="<?= $q['id'] ?>">
+        <textarea name="reply" placeholder="Write reply..." required></textarea>
+        <button class="btn btn-primary">Send Reply</button>
+      </form>
 
-        <textarea name="reply" placeholder="Write reply..." required
-                  style="width:100%;height:80px;"></textarea><br><br>
-
-        <button type="submit">Send Reply</button>
-    </form>
-
-    <br>
-
-    <!-- DELETE -->
-    <a href="?page=admin_queries&delete=<?= $q['id'] ?>&filter=<?= $filter ?>"
-       style="color:red;"
-       onclick="return confirm('Are you sure you want to delete this query?');">
-       Delete
-    </a>
-
-</div>
+    </div>
+  </div>
 
 <?php } ?>
 
-<!-- SUCCESS MESSAGE -->
-<?php if (isset($_GET['replied'])): ?>
-    <div style="color:green;font-weight:bold;">
-        ✅ Reply sent successfully!
-    </div>
-<?php endif; ?>
+</div>
+  </div>
+</div>

@@ -46,13 +46,39 @@ if (isset($_POST['update'])) {
 ?>
 
 
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="edit_member.css">
 <section style="height: 300px;"></section>
-<h2>Edit Member</h2>
 
-<form method="POST">
-    <input type="text" name="name" value="<?= htmlspecialchars($member['name']) ?>" required><br><br>
+<div class="admin-page-wrap admin-page-centered" style="padding-top: 80px; padding-left: 18px; padding-right: 18px;">
+  <div class="panel" style="margin:0; width:100%;">
+    <div class="panel-header">
+      <div class="panel-header-icon">👤</div>
+      <h2 class="panel-title">Edit Member</h2>
+    </div>
 
-    <input type="email" name="email" value="<?= htmlspecialchars($member['email']) ?>" required><br><br>
+    <div class="panel-body">
+      <a class="admin-action-link" style="background: rgba(143,174,156,0.18); border:1px solid rgba(143,174,156,0.35); color: #406450;"
+         href="index.php?page=profile_admin">⬅ Back to Dashboard</a>
 
-    <button type="submit" name="update">Update</button>
-</form>
+      <form method="POST" style="margin-top:18px;">
+        <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+          <div class="field full">
+            <label>Full Name</label>
+            <input type="text" name="name" value="<?= htmlspecialchars($member['name']) ?>" required>
+          </div>
+
+          <div class="field full">
+            <label>Email</label>
+            <input type="email" name="email" value="<?= htmlspecialchars($member['email']) ?>" required>
+          </div>
+        </div>
+
+        <div style="margin-top:18px; display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-end;">
+          <button class="btn btn-primary" type="submit" name="update">✅ Update Member</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

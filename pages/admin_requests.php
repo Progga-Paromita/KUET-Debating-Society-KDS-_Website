@@ -39,22 +39,71 @@ if (isset($_GET['reject'])) {
 }
 ?>
 
-
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin_requests.css">
 <section style="height: 300px;"></section>
-<h2>Pending Admin Requests</h2>
+<div class="admin-wrap">
+<div class="admin-page-wrap">
+  <div class="panel admin-requests-panel">
 
-<?php
-$result = mysqli_query($conn, "SELECT * FROM admin_requests WHERE status='pending'");
+    <div class="panel-header">
+      <div class="panel-header-icon">📝</div>
+      <h2 class="panel-title" >Pending Admin Requests</h2>
+    </div>
 
-while ($row = mysqli_fetch_assoc($result)) {
-    echo "<p>
-        <b>{$row['name']}</b> - {$row['email']}
-        
-        <a href='index.php?page=admin_requests&approve={$row['id']}'
-           style='color:green; margin-left:10px;'>Approve</a>
+    <div class="panel-body">
 
-        <a href='index.php?page=admin_requests&reject={$row['id']}'
-           style='color:red; margin-left:10px;'>Reject</a>
-    </p>";
-}
-?>
+      <?php
+      $result = mysqli_query($conn, "SELECT * FROM admin_requests WHERE status='pending'");
+      while ($row = mysqli_fetch_assoc($result)) {
+      ?>
+
+        <div class="admin-list-card">
+
+          <div class="request-row">
+
+            <!-- Avatar -->
+            <div class="request-avatar">
+              <?= strtoupper(substr(trim($row['name']), 0, 1)) ?>
+            </div>
+
+            <!-- Info -->
+            <div class="request-content">
+
+              <div class="request-header">
+                <div>
+                  <b><?= htmlspecialchars($row['name']) ?></b>
+                  <div class="request-email"><?= htmlspecialchars($row['email']) ?></div>
+                  <div class="request-id">ID #<?= (int)$row['id'] ?></div>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="request-actions">
+
+                <a class="admin-action-link admin-action-approve"
+                   href='index.php?page=admin_requests&approve=<?= (int)$row['id'] ?>'
+                   onclick="return confirm('Approve this admin request?');">
+                   ✅ Approve
+                </a>
+
+                <a class="admin-action-link admin-action-reject"
+                   href='index.php?page=admin_requests&reject=<?= (int)$row['id'] ?>'
+                   onclick="return confirm('Reject this admin request?');">
+                   ⛔ Reject
+                </a>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      <?php } ?>
+
+    </div>
+  </div>
+</div>
+
+</div>

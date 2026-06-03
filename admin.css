@@ -29,9 +29,14 @@
   box-shadow: 0 10px 30px var(--shadow-color);
 }
 
+/* Make admin containers easier to identify in dark mood */
 html.dark .panel {
   background: #0b1220;
+  /* brighter shadow so each admin container is clearly separated */
+  box-shadow: 0 18px 55px rgba(143, 174, 156, 0.55);
 }
+
+
 
 .panel-header {
   display: flex;
@@ -378,18 +383,18 @@ html.dark .field textarea {
 }
 
 .act-edit {
-  background: rgba(245, 208, 84, 0.35);
-  color: #7a5a00;
+  background: #8fae9c;
+  color: #f6f6f6;
 }
 
 .act-edit:hover {
-  background: #fde8b0;
+  background: #406450;
   transform: translateY(-1px);
 }
 
 .act-delete {
-  background: rgba(239, 68, 68, 0.15);
-  color: #b91c1c;
+  background: #b91c1c;
+  color: #f6f6f6;
 }
 
 .act-delete:hover {
@@ -548,18 +553,18 @@ html.dark .member-card {
 }
 
 .m-edit {
-  background: rgba(245, 208, 84, 0.35);
-  color: #7a5a00;
+  background: #8fae9c;
+  color: #f6f8f7;
 }
 
 .m-edit:hover {
-  background: #fde8b0;
+  background: #406450;
   transform: translateY(-2px);
 }
 
 .m-delete {
-  background: rgba(239, 68, 68, 0.15);
-  color: #b91c1c;
+  background: #c13030;
+  color: #f6f6f6;
 }
 
 .m-delete:hover {
@@ -570,7 +575,7 @@ html.dark .member-card {
 /* Responsive */
 @media (max-width: 768px) {
   .admin-wrap {
-    padding: 20px 12px 60px;
+    padding: 20px 12px 200px;
   }
 
   .panel-body {
@@ -609,4 +614,107 @@ html.dark .member-card {
     padding: 28px 20px 20px;
   }
 }
+
+/* Admin Queries / Requests (reuse same admin theme) */
+
+/* Wrap the page content if it uses the admin components */
+.admin-page-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-family: 'Inter', sans-serif;
+}
+
+.admin-page-title {
+  margin: 10px 0 0;
+  font-family: 'Playfair Display', serif;
+  font-weight: 800;
+}
+
+.admin-list-card {
+  background: rgba(143,174,156,0.08);
+  border: 1px solid rgba(143,174,156,0.28);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-list-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 10% 0%, rgba(143,174,156,0.22), transparent 40%),
+              radial-gradient(circle at 90% 100%, rgba(111,143,125,0.18), transparent 45%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.admin-list-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+html.dark .admin-list-card {
+  background: #0b1220;
+  box-shadow: 0 18px 55px rgba(143, 174, 156, 0.25);
+}
+
+.admin-pill {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.admin-pill-new {
+  background: rgba(231, 76, 60, 0.12);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.25);
+}
+
+.admin-action-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.admin-action-approve {
+  background: rgba(143, 174, 156, 0.18);
+  color: #406450;
+  border: 1px solid rgba(143, 174, 156, 0.35);
+}
+
+.admin-action-approve:hover {
+  background: rgba(143, 174, 156, 0.28);
+  transform: translateY(-1px);
+}
+
+.admin-action-reject {
+  background: rgba(239, 68, 68, 0.12);
+  color: #b91c1c;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.admin-action-reject:hover {
+  background: rgba(239, 68, 68, 0.18);
+  transform: translateY(-1px);
+}
+
 

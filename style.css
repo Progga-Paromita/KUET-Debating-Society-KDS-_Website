@@ -342,6 +342,9 @@ html.dark .theme-toggle i.fa-moon {
   position: relative;
   background-color: var(--cream);
 }
+html.dark .hero {
+  background-image: url("bg-dark.jpg");
+}
 
 .hero h1 {
   color: var(--white);
@@ -1215,6 +1218,33 @@ html.dark .join-modal-card {
 .member-register-hero{
   display:none;
 }
+
+/* Make sure admin/login signup pages look consistent with other card UIs */
+.member-register-card{
+  width:min(980px, 100%);
+  background: var(--cream);
+  border:1px solid var(--border-light);
+  border-radius: 22px;
+  box-shadow: 0 25px 70px var(--shadow-color);
+  padding: 26px;
+  position:relative;
+  overflow:hidden;
+}
+
+html.dark .member-register-card{
+  background:#0b1220;
+}
+
+.member-register-card::after{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(143,174,156,0.35), transparent 40%),
+    radial-gradient(circle at 90% 0%, rgba(97,135,113,0.25), transparent 45%);
+  pointer-events:none;
+}
+
 
 .member-register-card{
   width:min(980px, 100%);

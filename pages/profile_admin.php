@@ -120,48 +120,55 @@ if (isset($_GET['delete'])) {
 
 
 <section style="height: 300px;"></section>
-<?php
-/* ============================================================
-   ADMIN PROFILE PAGE  —  profile_admin.php
-   Requires: admin.css in the same directory (or adjust path)
-   ============================================================ */
-?>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="admin_topbar.css">
 
 <div class="admin-wrap">
+<h1 class="admin-title">Admin Profile</h1>
+<!-- RIGHT: ICON NAV -->
+      <div class="admin-nav-icons">
 
-  <!-- ── Admin Info Bar ──────────────────────────────────── -->
+        <!-- Requests -->
+        <a href="index.php?page=admin_requests" class="icon-btn" title="Requests">
+          📋
+        </a>
+
+        <!-- Notifications -->
+        <?php
+          $notif_result = mysqli_query($conn, "SELECT COUNT(*) as total FROM queries WHERE is_read = 0");
+          $notif_count  = mysqli_fetch_assoc($notif_result)['total'];
+        ?>
+
+        <a href="index.php?page=admin_queries" class="icon-btn" title="Notifications">
+          🔔
+          <?php if ($notif_count > 0): ?>
+            <span class="icon-badge"><?= $notif_count ?></span>
+          <?php endif; ?>
+        </a>
+
+      </div>
+
+  <!-- ADMIN TOP BAR -->
   <div class="panel">
     <div class="admin-bar">
+
+      <!-- LEFT: Admin info -->
       <div class="admin-identity">
         <div class="admin-avatar">
           <?= strtoupper(substr($admin['name'], 0, 1)) ?>
         </div>
+
         <div class="admin-details">
           <div class="name"><?= htmlspecialchars($admin['name']) ?></div>
           <div class="email"><?= htmlspecialchars($admin['email']) ?></div>
         </div>
       </div>
-      <div class="admin-nav">
-        <a href="index.php?page=admin_requests" class="nav-btn">
-          📋 Admin Requests
-        </a>
-        <?php
-          $notif_result = mysqli_query($conn, "SELECT COUNT(*) as total FROM queries WHERE is_read = 0");
-          $notif_count  = mysqli_fetch_assoc($notif_result)['total'];
-        ?>
-        <a href="index.php?page=admin_queries" class="nav-btn">
-          🔔 Notifications
-          <?php if ($notif_count > 0): ?>
-            <span class="notif-badge"><?= $notif_count ?></span>
-          <?php endif; ?>
-        </a>
-      </div>
+
+      
     </div>
   </div>
 
-  <!-- ── Add Event ───────────────────────────────────────── -->
   <div class="panel">
     <div class="panel-header">
       <div class="panel-header-icon">📅</div>
