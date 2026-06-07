@@ -339,6 +339,7 @@ html.dark .filter-pill.active {
   max-width: 900px;
   margin: 16px auto 20px; /* center horizontally */
   justify-content: center;
+  background: rgba(31, 95, 57, 0.08);
 }
 
 /* Center chat container */

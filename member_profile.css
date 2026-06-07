@@ -1,0 +1,260 @@
+/* =========================
+   ROOT DESIGN SYSTEM
+========================= */
+:root {
+  --bg: #f6f8fb;
+  --white: #ffffff;
+  --text: #2c3e50;
+  --muted: #6b7280;
+  --primary: #8fae9c;
+  --shadow: 0 12px 30px rgba(0,0,0,0.08);
+  --radius: 18px;
+}
+
+body {
+  background: var(--bg);
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  color: var(--text);
+}
+
+/* =========================
+   GLOBAL WRAPPER
+========================= */
+.dashboard-wrapper {
+  display: flex;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  align-items: flex-start;
+}
+
+/* =========================
+   LEFT PANEL
+========================= */
+.left-panel {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* =========================
+   PROFILE CARD (MODERN GLASS)
+========================= */
+.profile-card {
+  background: var(--white);
+  padding: 24px;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(143,174,156,0.15), transparent 60%);
+  transform: rotate(25deg);
+}
+
+.profile-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.12);
+}
+
+/* Avatar */
+.profile-avatar-img,
+.profile-avatar-fallback {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin: auto;
+}
+
+.profile-avatar-img {
+  object-fit: cover;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.profile-avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 800;
+  color: white;
+  background: linear-gradient(135deg, #8fae9c, #5f7f6f);
+}
+
+/* Badge */
+.badge {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(143,174,156,0.2);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+/* =========================
+   CARD SYSTEM
+========================= */
+.card {
+  background: var(--white);
+  padding: 18px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+/* =========================
+   MAIN PANEL
+========================= */
+.main-panel {
+  flex: 2;
+  min-width: 300px;
+}
+
+/* =========================
+   STATS GRID
+========================= */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+.stat {
+  background: var(--white);
+  padding: 18px;
+  border-radius: var(--radius);
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: 0.25s;
+}
+
+.stat:hover {
+  transform: translateY(-5px);
+}
+
+.stat h4 {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.stat p {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* =========================
+   CONTENT GRID
+========================= */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+/* =========================
+   MESSAGE BOX
+========================= */
+.message {
+  padding: 10px 12px;
+  border-radius: 12px;
+  margin: 10px 0;
+  background: rgba(143,174,156,0.12);
+  border-left: 4px solid var(--primary);
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.message:hover {
+  transform: translateX(5px);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.red { background: #e74c3c; }
+.green { background: #2ecc71; }
+
+/* =========================
+   NOTIFICATIONS
+========================= */
+.notify {
+  padding: 10px;
+  margin-top: 8px;
+  background: rgba(0,0,0,0.04);
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+/* =========================
+   TIMELINE FIX
+========================= */
+.timeline {
+  padding: 10px 12px;
+  border-left: 3px solid var(--primary);
+  margin: 8px 0;
+  background: rgba(143,174,156,0.08);
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+/* =========================
+   RESPONSIVE DESIGN (IMPORTANT UPGRADE)
+========================= */
+
+/* Tablet */
+@media (max-width: 992px) {
+  .dashboard-wrapper {
+    flex-direction: column;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .card {
+    padding: 14px;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 420px) {
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-card {
+    padding: 18px;
+  }
+}
