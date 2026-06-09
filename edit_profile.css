@@ -1,451 +1,228 @@
 /* =========================
-   PRO ADMIN DASHBOARD UI
-   Animated + Modern Upgrade
+   BASE VARIABLES (LIGHT)
 ========================= */
-
-/* Reset */
-.admin-wrap *,
-.admin-wrap *::before,
-.admin-wrap *::after {
-  box-sizing: border-box;
+:root {
+  --bg: #f6f8f5;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --border: rgba(0,0,0,0.08);
+  --primary: #8fae9c;
+  --primary-dark: #6f8f7d;
+  --shadow: rgba(0,0,0,0.08);
 }
 
-/* Layout */
-.admin-wrap {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 40px 20px 80px;
-  display: flex;
-  flex-direction: column;
-  gap: 26px;
+/* =========================
+   DARK MODE VARIABLES
+========================= */
+html.dark {
+  --bg: #0b1220;
+  --card: #111827;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --border: rgba(255,255,255,0.08);
+  --primary: #8fae9c;
+  --primary-dark: #406450;
+  --shadow: rgba(0,0,0,0.35);
+}
+
+/* =========================
+   PAGE WRAPPER
+========================= */
+body {
+  margin: 0;
   font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s ease;
+}
+
+.edit-page-wrapper {
   min-height: 100vh;
-  animation: pageFadeIn 0.6s ease;
-}
-
-@keyframes pageFadeIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* =========================
-   PANEL
-========================= */
-
-.panel {
-  background: var(--cream);
-  border: 1px solid var(--border-light);
-  border-radius: 22px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px var(--shadow-color);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  position: relative;
-}
-
-.panel:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 18px 55px rgba(0,0,0,0.12);
-}
-
-html.dark .panel {
-  background: #0b1220;
-  box-shadow: 0 18px 55px rgba(143, 174, 156, 0.25);
-}
-
-/* Panel Header */
-.panel-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 18px 24px;
-  border-bottom: 1px solid var(--border-light);
-}
-
-.panel-header-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 16px;
-  background: rgba(143, 174, 156, 0.18);
-  border: 1px solid rgba(143, 174, 156, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  transition: 0.3s ease;
-}
-
-.panel:hover .panel-header-icon {
-  transform: rotate(6deg) scale(1.05);
-}
-
-.panel-header h2 {
-  margin: 0;
-  font-family: 'Playfair Display', serif;
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--text-dark);
-}
-
-/* =========================
-   ADMIN TOP BAR
-========================= */
-
-.admin-bar {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 18px 24px;
-}
-
-.admin-bar.modern-profile {
-  justify-content: space-between;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-
-.admin-nav-icons {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-left: auto;
-}
-
-.icon-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: rgba(143, 174, 156, 0.15);
-  border: 1px solid rgba(143, 174, 156, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  text-decoration: none;
-  font-size: 18px;
-  transition: 0.2s;
-}
-
-.icon-btn:hover {
-  transform: translateY(-2px);
-  background: rgba(143, 174, 156, 0.25);
-}
-
-.icon-badge {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  background: #e74c3c;
-  color: #fff;
-  font-size: 11px;
-  font-weight: 800;
-  padding: 2px 6px;
-  border-radius: 999px;
-}
-
-/* =========================
-   PROFILE
-========================= */
-
-.profile-left {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-.profile-image {
-  width: 68px;
-  height: 68px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid var(--border-light);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  transition: 0.3s ease;
-}
-
-.profile-image:hover {
-  transform: translateY(-2px);
-}
-
-.profile-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.avatar-fallback {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--green);
-  color: #fff;
-  font-weight: 700;
-}
-
-.profile-info h2 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.profile-info p {
-  margin: 4px 0 0;
-  font-size: 13px;
-  color: var(--right-p-color);
-}
-
-.role-badge {
-  display: inline-block;
-  margin-top: 6px;
-  padding: 4px 10px;
-  font-size: 11px;
-  border-radius: 999px;
-  background: rgba(143,174,156,0.15);
-  color: var(--green-dark);
-}
-
-/* =========================
-   BUTTONS
-========================= */
-
-.btn-edit-pro {
-  background: var(--green);
-  color: #fff;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.btn-edit-pro:hover {
-  background: var(--green-dark);
-  transform: translateY(-2px);
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 14px 28px;
-  border-radius: 30px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-/* =========================
-   EDIT PROFILE BOX
-========================= */
-
-.edit-profile-box {
-  display: none;
-  margin-top: 18px;
-  padding: 24px;
-  border-radius: 16px;
-  background: var(--white);
-  border: 1px solid var(--border-light);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-}
-
-/* =========================
-   FORM
-========================= */
-
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
-
-.field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-}
-
-.field.full {
-  grid-column: 1 / -1;
-}
-
-/* =========================
-   ACTION BUTTONS
-========================= */
-
-.edit-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.btn-cancel {
-  background: #eee;
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-save {
-  background: var(--green);
-  color: #fff;
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 20px;
 }
 
 /* =========================
-   MEMBERS
+   HEADER OUTSIDE CARD
 ========================= */
-
-.members-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 24px;
-}
-
-.member-card {
-  background: var(--white);
-  padding: 36px 26px;
-  border-radius: 22px;
-  text-align: center;
-  box-shadow: 0 10px 30px var(--shadow-color);
-  transition: 0.3s ease;
-}
-
-.member-card:hover {
-  transform: translateY(-10px);
-}
-
-/* =========================
-   CHAT INFO
-========================= */
-
-.chat-info {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.info-row {
-  display: flex;
-  gap: 6px;
-  font-size: 14px;
-}
-
-.label {
-  font-weight: 600;
-  color: #555;
-  min-width: 70px;
-}
-
-.value {
-  color: #111;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media (max-width: 768px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .admin-bar.modern-profile {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-
-/* =========================
-   TOP INFO HEADER (PRO STYLE)
-========================= */
-
 .top-profile-info {
   text-align: center;
   margin-bottom: 25px;
-  size: 50px;
 }
 
 .role-pill {
   display: inline-block;
   padding: 6px 14px;
-  background: rgba(29, 188, 92, 0.15);
-  color: #34e56f;
-  font-size: 27px;
-  font-weight: 600;
   border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(124,92,255,0.15);
+  color: var(--primary-dark);
   margin-bottom: 10px;
-  letter-spacing: 0.5px;
 }
 
 .title {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 28px;
+  font-weight: 800;
   margin: 0;
-  color: #02c43f;
 }
 
 .subtitle {
   font-size: 13px;
-  opacity: 0.7;
+  color: var(--muted);
   margin-top: 6px;
 }
 
 /* =========================
-   ACTION BUTTONS (PRO FIX)
+   CARD
 ========================= */
+.edit-card {
+  width: 100%;
+  max-width: 520px;
+  background: var(--card);
+  border-radius: 18px;
+  padding: 30px;
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 60px var(--shadow);
+  transition: 0.3s ease;
+}
 
+/* =========================
+   IMAGE SECTION
+========================= */
+.image-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.image-preview img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary);
+}
+
+.avatar-fallback.big {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  color: #fff;
+  font-size: 40px;
+  margin: 0 auto;
+}
+
+/* =========================
+   UPLOAD BUTTON
+========================= */
+.upload-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 14px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.upload-btn:hover {
+  background: var(--primary-dark);
+}
+
+.upload-btn input {
+  display: none;
+}
+
+/* =========================
+   FORM
+========================= */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.field input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  transition: 0.2s;
+}
+
+.field input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(124,92,255,0.15);
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
 .action-buttons {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin-top: 25px;
   gap: 12px;
 }
 
-/* BACK BUTTON (CANCEL FIXED) */
 .btn-cancel {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   padding: 10px 16px;
   border-radius: 10px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
   text-decoration: none;
-  font-size: 13px;
   font-weight: 600;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  transition: 0.2s ease;
+  transition: 0.2s;
 }
 
 .btn-cancel:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
+  background: rgba(0,0,0,0.05);
 }
 
-/* SAVE BUTTON (MORE PREMIUM) */
+html.dark .btn-cancel:hover {
+  background: rgba(255,255,255,0.06);
+}
+
 .btn-save {
   padding: 10px 18px;
   border-radius: 10px;
   border: none;
-  cursor: pointer;
   font-weight: 600;
   color: #fff;
-  background: linear-gradient(135deg, #7c5cff, #5a3df0);
-  box-shadow: 0 10px 25px rgba(124, 92, 255, 0.3);
-  transition: 0.2s ease;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .btn-save:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(124, 92, 255, 0.4);
+  box-shadow: 0 10px 25px rgba(124,92,255,0.25);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media(max-width:600px){
+  .action-buttons{
+    flex-direction: column;
+  }
+
+  .btn-cancel,
+  .btn-save{
+    width:100%;
+    text-align:center;
+  }
 }

@@ -191,37 +191,64 @@ if (isset($_POST['update_profile'])) {
     <!-- PROFILE HEADER -->
     <div class="admin-bar modern-profile">
 
+        <!-- LEFT SIDE -->
         <div class="profile-left">
 
-            <!-- IMAGE -->
+            <!-- AVATAR -->
             <div class="profile-image">
                 <?php if (!empty($admin['profile_pic'])): ?>
                     <img src="uploads/profile/<?= htmlspecialchars($admin['profile_pic']) ?>">
                 <?php else: ?>
-                    <div class="avatar-fallback">
+                    <div class="avatar-fallback modern-avatar">
                         <?= strtoupper(substr($admin['name'], 0, 1)) ?>
                     </div>
                 <?php endif; ?>
             </div>
 
-            <!-- TEXT -->
-            <div class="profile-info">
-                <h2><?= htmlspecialchars($admin['name']) ?></h2>
-                <span class="role-badge">Administrator</span>
-                <p><?= htmlspecialchars($admin['email']) ?></p>
-            </div>
+            <!-- INFO -->
+           <div class="profile-info">
 
-        </div>
+    <h2 class="admin-name">
+        <?= htmlspecialchars($admin['name']) ?>
+    </h2>
 
-        <!-- ACTION -->
-       
-            <a href="index.php?page=edit_profile&id=<?= $admin['id'] ?>" class="btn-edit-pro">
-             ✏ Edit Profile
-             </a>
+    <div class="meta-line">
+        <span class="role-badge">
+            <?= htmlspecialchars($admin['position']) ?>
+        </span>
+
+        <span class="status-dot"></span>
+        <span class="status-text">Active</span>
+    </div>
+
+    <div class="admin-details">
+
+        <p><strong>Name:</strong> <?= htmlspecialchars($admin['name']) ?></p>
+
+        <p><strong>Department:</strong> <?= htmlspecialchars($admin['dept']) ?></p>
+
+        <p><strong>Email:</strong> <?= htmlspecialchars($admin['email']) ?></p>
+
+        <p><strong>Position:</strong> <b><?= htmlspecialchars($admin['position']) ?></b></p>
 
     </div>
 
-  </div>
+</div>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div class="profile-actions">
+
+            <a href="index.php?page=edit_profile&id=<?= $admin['id'] ?>" class="btn-edit-pro modern-btn">
+                ✏ Edit Profile
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
 
   <div class="panel">
     <div class="panel-header">
@@ -432,9 +459,10 @@ if (isset($_POST['update_profile'])) {
       ?>
         <div class="member-card">
           <div class="member-avatar"><?= $initials ?></div>
-          <h3><?= htmlspecialchars($row['name']) ?></h3>
-          <div class="member-email"><?= htmlspecialchars($row['email']) ?></div>
-          <div class="member-id">ID #<?= $row['id'] ?></div>
+          <h3>Name: <?= htmlspecialchars($row['name']) ?></h3>
+          <div class="member-email">Email: <?= htmlspecialchars($row['email']) ?></div>
+          <!-- <div class="member-email">Roll: <?= htmlspecialchars($row['roll']) ?></div> -->
+          <div class="member-dept">Department: <?= htmlspecialchars($row['dept']) ?></div>
           <div class="member-actions">
             <a class="m-edit" href="index.php?page=edit_member&id=<?= $row['id'] ?>">✏ Edit</a>
             <a class="m-delete"

@@ -108,30 +108,65 @@ if ($upcoming && mysqli_num_rows($upcoming) > 0) {
 
 <section class="members-section" id="members-section">
     <div class="container">
-      <h2 class="section-title">Our Team Members</h2>
-      <div class="members-grid">
+        <h2 class="section-title">Our Team Members</h2>
+
+        <div class="members-grid">
+
         <?php
-$admins = mysqli_query($conn, "SELECT * FROM admin");
+        // 🔥 SORT BY POSITION (President → Vice President → others)
+        $admins = mysqli_query($conn, "
+            SELECT * FROM admin
+            ORDER BY 
+                CASE 
+                    WHEN position = 'President' THEN 1
+                    WHEN position = 'Vice President' THEN 2
+                    WHEN position = 'Secretary' THEN 3
+                    WHEN position = 'Member' THEN 4
+                    ELSE 5
+                END
+        ");
 
-while ($a = mysqli_fetch_assoc($admins)) {
-?>
-    
-    <div class="member-card">
-        <div class="member-avatar">
-            <i class="fa-solid fa-user"></i>
+        while ($a = mysqli_fetch_assoc($admins)) {
+        ?>
+
+            <div class="member-card">
+
+                <!-- AVATAR -->
+                <div class="member-avatar">
+                    <?php if (!empty($a['profile_pic'])): ?>
+                        <img src="uploads/profile/<?= htmlspecialchars($a['profile_pic']) ?>">
+                    <?php else: ?>
+                        <?= strtoupper(substr($a['name'], 0, 1)) ?>
+                    <?php endif; ?>
+                </div>
+
+                <!-- NAME -->
+                <h3 class="member-name">
+                    <?= htmlspecialchars($a['name']) ?>
+                </h3>
+
+                <!-- POSITION -->
+                <p class="member-position">
+                    <strong><?= htmlspecialchars($a['position']) ?></strong>
+                </p>
+
+                <!-- EMAIL -->
+                <p class="member-email">
+                    <?= htmlspecialchars($a['email']) ?>
+                </p>
+
+                <!-- DEPARTMENT -->
+                <p class="member-dept">
+                    Dept: <?= htmlspecialchars($a['dept']) ?>
+                </p>
+
+            </div>
+
+        <?php } ?>
+
         </div>
-
-        <p>
-            <?php echo $a['name']; ?> - <?php echo $a['email']; ?>
-        </p>
     </div>
-
-<?php
-}
-?>
-      </div>
-    </div>
-  </section>
+</section>
 
 
 <!-- Resources Section -->

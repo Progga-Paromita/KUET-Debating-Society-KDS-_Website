@@ -111,9 +111,37 @@ if (isset($_POST['update_profile'])) {
                 </div>
 
                  <div class="field">
-                    <label>Department </label>
-                    <input type="text" name="dept" value="<?= htmlspecialchars($admin['dept']) ?>" required>
-                </div>
+    <label>Department</label>
+
+    <select name="dept" required
+        style="
+            padding:12px;
+            border-radius:10px;
+            border:1px solid #e5e7eb;
+            outline:none;
+            background:transparent;
+            color:inherit;
+        ">
+
+        <option value="">Select Department</option>
+
+        <option value="CSE"  <?= ($admin['dept']=="CSE")?"selected":"" ?>>CSE</option>
+        <option value="EEE"  <?= ($admin['dept']=="EEE")?"selected":"" ?>>EEE</option>
+        <option value="BME"  <?= ($admin['dept']=="BME")?"selected":"" ?>>BME</option>
+        <option value="MTE"  <?= ($admin['dept']=="MTE")?"selected":"" ?>>MTE</option>
+        <option value="ARCH" <?= ($admin['dept']=="ARCH")?"selected":"" ?>>ARCH</option>
+        <option value="MSE"  <?= ($admin['dept']=="MSE")?"selected":"" ?>>MSE</option>
+        <option value="URP"  <?= ($admin['dept']=="URP")?"selected":"" ?>>URP</option>
+        <option value="CE"   <?= ($admin['dept']=="CE")?"selected":"" ?>>CE</option>
+        <option value="ChE"  <?= ($admin['dept']=="ChE")?"selected":"" ?>>ChE</option>
+        <option value="ME"   <?= ($admin['dept']=="ME")?"selected":"" ?>>ME</option>
+        <option value="TE"   <?= ($admin['dept']=="TE")?"selected":"" ?>>TE</option>
+        <option value="LE"   <?= ($admin['dept']=="LE")?"selected":"" ?>>LE</option>
+
+        <option value="OTHERS" <?= ($admin['dept']=="OTHERS")?"selected":"" ?>>OTHERS</option>
+
+    </select>
+</div>
 
             </div>
 
