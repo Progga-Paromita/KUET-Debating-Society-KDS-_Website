@@ -116,6 +116,42 @@ if (isset($_GET['delete'])) {
     header("Location: index.php?page=profile_admin");
     exit;
 }
+
+
+/* =========================
+   UPDATE ADMIN PROFILE
+========================= */
+if (isset($_POST['update_profile'])) {
+
+    $name  = $_POST['name'];
+    $email = $_POST['email'];
+
+    $profilePic = $admin['profile_pic']; // keep old
+
+    if (!empty($_FILES['profile_pic']['name'])) {
+
+        $allowed = ['jpg','jpeg','png'];
+        $ext = strtolower(pathinfo($_FILES['profile_pic']['name'], PATHINFO_EXTENSION));
+
+        if (in_array($ext, $allowed)) {
+
+            $profilePic = time() . "_" . $_FILES['profile_pic']['name'];
+            $target = "uploads/profile/" . $profilePic;
+
+            move_uploaded_file($_FILES['profile_pic']['tmp_name'], $target);
+        }
+    }
+
+    $stmt = $conn->prepare("UPDATE admin SET name=?, email=?, profile_pic=? WHERE id=?");
+    $stmt->bind_param("sssi", $name, $email, $profilePic, $admin_id);
+    $stmt->execute();
+
+    header("Location: index.php?page=profile_admin");
+    exit;
+}
+
+
+
 ?>
 
 
@@ -125,7 +161,7 @@ if (isset($_GET['delete'])) {
 <link rel="stylesheet" href="admin_topbar.css">
 
 <div class="admin-wrap">
-<h1 class="admin-title">Admin Profile</h1>
+<h1 class="admin-title">Adminnn Profile</h1>
 <!-- RIGHT: ICON NAV -->
       <div class="admin-nav-icons">
 
@@ -151,22 +187,99 @@ if (isset($_GET['delete'])) {
 
   <!-- ADMIN TOP BAR -->
   <div class="panel">
-    <div class="admin-bar">
 
-      <!-- LEFT: Admin info -->
-      <div class="admin-identity">
-        <div class="admin-avatar">
-          <?= strtoupper(substr($admin['name'], 0, 1)) ?>
+    <!-- PROFILE HEADER -->
+    <div class="admin-bar modern-profile">
+
+        <div class="profile-left">
+
+            <!-- IMAGE -->
+            <div class="profile-image">
+                <?php if (!empty($admin['profile_pic'])): ?>
+                    <img src="uploads/profile/<?= htmlspecialchars($admin['profile_pic']) ?>">
+                <?php else: ?>
+                    <div class="avatar-fallback">
+                        <?= strtoupper(substr($admin['name'], 0, 1)) ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <!-- TEXT -->
+            <div class="profile-info">
+                <h2><?= htmlspecialchars($admin['name']) ?></h2>
+                <span class="role-badge">Administrator</span>
+                <p><?= htmlspecialchars($admin['email']) ?></p>
+            </div>
+
         </div>
 
-        <div class="admin-details">
-          <div class="name"><?= htmlspecialchars($admin['name']) ?></div>
-          <div class="email"><?= htmlspecialchars($admin['email']) ?></div>
-        </div>
-      </div>
+        <!-- ACTION -->
+        <button class="btn-edit-pro" onclick="toggleEdit()">
+            ✏ Edit Profile
+        </button>
 
-      
     </div>
+
+    <!-- EDIT PANEL -->
+    <div id="editProfileBox" class="edit-profile-box">
+
+        <div class="edit-header">
+            <h3>Update Profile</h3>
+            <span onclick="toggleEdit()" class="close-btn">✖</span>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <!-- IMAGE PREVIEW -->
+            <div class="profile-upload">
+                <div class="upload-preview">
+                    <?php if (!empty($admin['profile_pic'])): ?>
+                        <img id="previewImg" src="uploads/profile/<?= htmlspecialchars($admin['profile_pic']) ?>">
+                    <?php else: ?>
+                        <div class="avatar-fallback big">
+                            <?= strtoupper(substr($admin['name'], 0, 1)) ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <label class="upload-btn">
+                    Change Photo
+                    <input type="file" name="profile_pic" accept="image/*" onchange="previewImage(event)">
+                </label>
+            </div>
+
+            <!-- FORM -->
+            <div class="form-grid">
+
+                <div class="field full">
+                    <label>Name</label>
+                    <input type="text" name="name" value="<?= htmlspecialchars($admin['name']) ?>" required>
+                </div>
+
+                <div class="field full">
+                    <label>Email</label>
+                    <input type="email" name="email" value="<?= htmlspecialchars($admin['email']) ?>" required>
+                </div>
+
+            </div>
+
+            <div class="edit-actions">
+                <button type="button" class="btn-cancel" onclick="toggleEdit()">Cancel</button>
+                <button class="btn-save" name="update_profile">✔ Save Changes</button>
+            </div>
+
+        </form>
+
+    </div>
+
+
+
+    <script>
+        function toggleEdit() {
+        let box = document.getElementById("editProfileBox");
+        box.style.display = (box.style.display === "none") ? "block" : "none";
+       }
+    </script>
   </div>
 
   <div class="panel">
@@ -393,4 +506,4 @@ if (isset($_GET['delete'])) {
     </div>
   </div>
 
-</div><!-- /admin-wrap -->
+</div>

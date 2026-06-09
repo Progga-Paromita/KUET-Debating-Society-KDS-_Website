@@ -10,19 +10,31 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != "admin") {
 ========================= */
 if (isset($_GET['approve'])) {
 
-    $id = $_GET['approve'];
+    $id = (int) $_GET['approve'];
 
+    // 1. Get request data
     $req = mysqli_query($conn, "SELECT * FROM admin_requests WHERE id=$id");
     $data = mysqli_fetch_assoc($req);
 
-    // move to admin table
-    mysqli_query($conn, "INSERT INTO admin(name,email,password)
-        VALUES('{$data['name']}','{$data['email']}','{$data['password']}')");
+    if ($data) {
 
-    // mark as approved
-    mysqli_query($conn, "UPDATE admin_requests SET status='approved' WHERE id=$id");
+        $name = $data['name'];
+        $email = $data['email'];
+        $password = $data['password'];
+        $dept = $data['dept'];
+        $position = $data['position'];
 
-    echo "Admin approved!";
+        // 2. Insert into admin table
+        $insert = "INSERT INTO admin (name, email, password, dept, position)
+                   VALUES ('$name', '$email', '$password', '$dept', '$position')";
+
+        mysqli_query($conn, $insert);
+
+        // 3. Update request status
+        mysqli_query($conn, "UPDATE admin_requests SET status='approved' WHERE id=$id");
+
+        echo "Admin approved successfully!";
+    }
 }
 
 /* =========================
@@ -76,9 +88,13 @@ if (isset($_GET['reject'])) {
 
                 <div class="request-header">
                   <div>
-                    <b><?= htmlspecialchars($row['name']) ?></b>
-                    <div class="request-email"><?= htmlspecialchars($row['email']) ?></div>
-                    <div class="request-id">ID #<?= (int)$row['id'] ?></div>
+                    <b>Position: <?= htmlspecialchars($row['position']) ?></b>
+                    <!-- <b>Name: <?= htmlspecialchars($row['name']) ?></b> -->
+                    <div class="request-email">Name: <?= htmlspecialchars($row['name']) ?></div>
+                    <div class="request-email">Email: <?= htmlspecialchars($row['email']) ?></div>
+                    <div class="request-email">Department: <?= htmlspecialchars($row['dept']) ?></div>
+                    <!-- <div class="request-email">Position: <?= htmlspecialchars($row['position']) ?></div> -->
+                    <!-- <div class="request-id">ID #<?= (int)$row['id'] ?></div> -->
                   </div>
                 </div>
 

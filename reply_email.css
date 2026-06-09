@@ -1,0 +1,26 @@
+.reply-wrap{
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    color: white;
+}
+
+.reply-wrap input,
+.reply-wrap textarea{
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+}
+
+.reply-wrap button{
+    background: #7c5cff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}

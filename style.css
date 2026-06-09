@@ -841,9 +841,48 @@ html.dark .join-modal-card {
 
 .form-group {
   display: flex;
+  margin-bottom: 16px;
   flex-direction: column;
 }
 
+.form-label{
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: rgba(255,255,255,0.85);
+}
+
+.required{
+    color: #ff4d4d;
+    font-size: 12px;
+}
+
+.input-box{
+    position: relative;
+}
+
+.form-control{
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.25);
+    color: #fff;
+    outline: none;
+    transition: 0.25s ease;
+    font-size: 14px;
+}
+
+.form-control:focus{
+    border-color: #7c5cff;
+    box-shadow: 0 0 0 3px rgba(124,92,255,0.2);
+}
+
+.form-control option{
+    background: #1c1c1c;
+    color: #fff;
+}
 .form-group label {
   font-weight: 500;
   margin-bottom: 8px;
@@ -1675,4 +1714,36 @@ html.dark .role-icon {
   }
 }
 
+.member-register-admin-section{
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+}
+
+.member-register-section-title{
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #ffffffcc;
+    letter-spacing: 0.5px;
+}
+
+.input-wrapper select{
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.25);
+    color: #fff;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-wrapper select:focus{
+    border-color: #7c5cff;
+    box-shadow: 0 0 0 3px rgba(124,92,255,0.2);
+}
     
