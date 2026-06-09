@@ -197,3 +197,73 @@ html.dark .admin-list-card:hover {
     justify-content: flex-start;
   }
 }
+
+
+
+/* =========================
+   CENTER WRAPPER
+========================= */
+.action-buttons.single {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+/* =========================
+   MODERN BACK BUTTON
+========================= */
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 22px;
+  border-radius: 14px;
+
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--border);
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* HOVER EFFECT */
+.btn-back:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  background: linear-gradient(135deg, rgba(143,174,156,0.15), transparent);
+}
+
+/* ACTIVE CLICK */
+.btn-back:active {
+  transform: scale(0.97);
+}
+
+/* ICON ANIMATION */
+.btn-back::before {
+  content: "←";
+  transition: transform 0.2s ease;
+}
+
+.btn-back:hover::before {
+  transform: translateX(-3px);
+}
+
+/* DARK MODE SUPPORT */
+html.dark .btn-back {
+  background: var(--card);
+  border-color: var(--border);
+}
+
+html.dark .btn-back:hover {
+  background: rgba(255,255,255,0.05);
+}

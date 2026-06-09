@@ -98,19 +98,16 @@
               </ul>
             </li>
             <li class="nav-item">
-              <span class="nav-link">Visit</span>
-              <ul class="dropdown">
-                <li><a href="#">Campus Tour</a></li>
-                <li><a href="#">Location</a></li>
-              </ul>
+              <span class="nav-link" onclick="document.getElementById('resources-section').scrollIntoView({behavior:'smooth'})">Resources</span>
             </li>
             <li class="nav-item">
-              <span class="nav-link">Resources</span>
+              <span class="nav-link">Visit</span>
               <ul class="dropdown">
-                <li><a href="#">Blog</a></li>
-                <li><a href="#resources-section">Debate Resources</a></li>
+                <li><a href="https://www.google.com/search?q=kuet&oq=KUET&gs_lcrp=EgZjaHJvbWUqDwgAECMYJxjjAhiABBiKBTIPCAAQIxgnGOMCGIAEGIoFMgwIARAuGCcYgAQYigUyBggCEEUYOzIHCAMQABiABDIHCAQQABiABDIHCAUQABiABDIHCAYQABiABDIHCAcQABiABDIHCAgQABiABDIHCAkQABiABNIBCTI5ODFqMGoxNagCCLACAfEFQiKhj5u3IrY&sourceid=chrome&ie=UTF-8#lpg=cid:CgIgAQ%3D%3D,ik:CAoSFkNJSE0wb2dLRUlDQWdJQzA5TmJXUVE%3D" target="_blank">Campus Tour</a></li>
+                <li><a href="https://www.google.com/maps?gs_lcrp=EgZjaHJvbWUqDwgAECMYJxjjAhiABBiKBTIPCAAQIxgnGOMCGIAEGIoFMgwIARAuGCcYgAQYigUyBggCEEUYOzIHCAMQABiABDIHCAQQABiABDIHCAUQABiABDIHCAYQABiABDIHCAcQABiABDIHCAgQABiABDIHCAkQABiABNIBCTI5ODFqMGoxNagCCLACAfEFQiKhj5u3IrY&um=1&ie=UTF-8&fb=1&gl=bd&sa=X&geocode=KeX2Dx3am_85MQzN7whpkjoS&daddr=Khulna+9203" target="_blank">Location</a></li>
               </ul>
             </li>
+            
           </ul>
         </div>
       </nav>

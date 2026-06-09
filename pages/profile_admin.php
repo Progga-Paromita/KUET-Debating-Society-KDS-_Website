@@ -13,37 +13,42 @@ $admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM admin WHERE id=$a
 if (isset($_POST['add_event'])) {
 
     $title = $_POST['title'];
-    $desc = $_POST['description'];
-    $date = $_POST['event_date'];
+    $desc  = $_POST['description'];
+    $date  = $_POST['event_date'];
+    $category = $_POST['category']; // ✅ ADDED CATEGORY
 
     $imageName = "";
 
     if (!empty($_FILES['image']['name'])) {
 
-    // ✅ FILE TYPE VALIDATION (ADD HERE)
-    $allowed = ['jpg', 'jpeg', 'png'];
-    $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+        // FILE TYPE VALIDATION
+        $allowed = ['jpg', 'jpeg', 'png'];
+        $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
 
-    if (!in_array($ext, $allowed)) {
-        echo "Invalid file type! Only JPG, JPEG, PNG allowed.";
-        exit;
+        if (!in_array($ext, $allowed)) {
+            echo "Invalid file type! Only JPG, JPEG, PNG allowed.";
+            exit;
+        }
+
+        // UNIQUE NAME
+        $imageName = time() . "_" . $_FILES['image']['name'];
+
+        // UPLOAD PATH
+        $target = "uploads/" . $imageName;
+
+        if (!move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
+            echo "Image upload failed!";
+            exit;
+        }
     }
 
-    // ✅ GENERATE UNIQUE NAME
-    $imageName = time() . "_" . $_FILES['image']['name'];
+    // ✅ UPDATED QUERY (CATEGORY ADDED)
+    $stmt = $conn->prepare("
+        INSERT INTO events (title, description, event_date, category, image)
+        VALUES (?, ?, ?, ?, ?)
+    ");
 
-    // ✅ UPLOAD PATH
-    $target = "uploads/" . $imageName;
-
-    // ✅ MOVE FILE
-    if (!move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
-        echo "Image upload failed!";
-        exit;
-    }
-}
-
-    $stmt = $conn->prepare("INSERT INTO events(title, description, event_date, image) VALUES(?,?,?,?)");
-    $stmt->bind_param("ssss", $title, $desc, $date, $imageName);
+    $stmt->bind_param("sssss", $title, $desc, $date, $category, $imageName);
     $stmt->execute();
 
     header("Location: index.php?page=profile_admin");
@@ -84,6 +89,7 @@ if (isset($_POST['add_resource'])) {
    DELETE EVENT
 ========================= */
 if (isset($_GET['delete_event'])) {
+
     $id = (int) $_GET['delete_event'];
 
     mysqli_query($conn, "DELETE FROM events WHERE id=$id");
@@ -96,7 +102,18 @@ if (isset($_GET['delete_event'])) {
    DELETE RESOURCE
 ========================= */
 if (isset($_GET['delete_resource'])) {
+
     $id = (int) $_GET['delete_resource'];
+
+    $fileQuery = mysqli_query($conn, "SELECT file FROM resources WHERE id=$id");
+    $fileData = mysqli_fetch_assoc($fileQuery);
+
+    if (!empty($fileData['file'])) {
+        $filePath = "uploads/resources/" . $fileData['file'];
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+    }
 
     mysqli_query($conn, "DELETE FROM resources WHERE id=$id");
 
@@ -116,7 +133,6 @@ if (isset($_GET['delete'])) {
     header("Location: index.php?page=profile_admin");
     exit;
 }
-
 
 /* =========================
    UPDATE ADMIN PROFILE
@@ -161,7 +177,10 @@ if (isset($_POST['update_profile'])) {
 <link rel="stylesheet" href="admin_topbar.css">
 
 <div class="admin-wrap">
-<h1 class="admin-title">Adminnn Profile</h1>
+  <h1 class="admin-name"> Hello 
+        <?= htmlspecialchars($admin['position']) ?>!!!
+    </h1>
+
 <!-- RIGHT: ICON NAV -->
       <div class="admin-nav-icons">
 
@@ -190,7 +209,6 @@ if (isset($_POST['update_profile'])) {
 
     <!-- PROFILE HEADER -->
     <div class="admin-bar modern-profile">
-
         <!-- LEFT SIDE -->
         <div class="profile-left">
 
@@ -208,18 +226,8 @@ if (isset($_POST['update_profile'])) {
             <!-- INFO -->
            <div class="profile-info">
 
-    <h2 class="admin-name">
-        <?= htmlspecialchars($admin['name']) ?>
-    </h2>
+    
 
-    <div class="meta-line">
-        <span class="role-badge">
-            <?= htmlspecialchars($admin['position']) ?>
-        </span>
-
-        <span class="status-dot"></span>
-        <span class="status-text">Active</span>
-    </div>
 
     <div class="admin-details">
 
@@ -320,7 +328,7 @@ if (isset($_POST['update_profile'])) {
             };
         ?>
           <tr>
-            <td class="id-cell">#<?= $e['id'] ?></td>
+            <td class="id-cell"><?= $e['id'] ?></td>
             <td><strong><?= htmlspecialchars($e['title']) ?></strong></td>
             <td><?= date('M j, Y', strtotime($e['event_date'])) ?></td>
             <td><span class="status-badge <?= $status_class ?>"><?= $e['status'] ?></span></td>
@@ -389,7 +397,7 @@ if (isset($_POST['update_profile'])) {
   <div class="panel">
     <div class="panel-header">
       <div class="panel-header-icon">📁</div>
-      <h2>Manage Resources</h2>
+      <h1>Manage Resources</h1>
     </div>
     <div class="panel-body">
       <?php
@@ -398,14 +406,14 @@ if (isset($_POST['update_profile'])) {
           $res = $conn->query("SELECT * FROM resources WHERE category='$cat' ORDER BY id DESC");
       ?>
       <div class="resource-category">
-        <div class="cat-label"><span></span><?= $cat ?></div>
+        <div class="cat-label"><h3><span></span><?= $cat ?></h3></div>
         <?php if ($res->num_rows > 0): ?>
           <table class="data-table">
             <thead>
               <tr>
-                <th>Title</th>
-                <th>Content</th>
-                <th>Actions</th>
+                <th><h5>Title</h5></th>
+                <th><h5>Content</h5></th>
+                <th><h5>Actions</h5></th>
               </tr>
             </thead>
             <tbody>
@@ -413,7 +421,6 @@ if (isset($_POST['update_profile'])) {
               <tr>
                 <td>
                   <strong><?= htmlspecialchars($r['title']) ?></strong>
-                  <div class="resource-id">#<?= $r['id'] ?></div>
                 </td>
                 <td>
                   <?php if (!empty($r['link'])): ?>
@@ -447,7 +454,7 @@ if (isset($_POST['update_profile'])) {
   <div class="panel">
     <div class="panel-header">
       <div class="panel-header-icon">👥</div>
-      <h2>Member Management</h2>
+      <h1>Member Management</h1>
     </div>
     <div class="panel-body">
       <div class="members-grid">

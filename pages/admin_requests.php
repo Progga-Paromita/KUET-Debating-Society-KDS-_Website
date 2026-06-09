@@ -122,6 +122,13 @@ if (isset($_GET['reject'])) {
 
         <?php } ?>
 
+        <div class="action-buttons single">
+
+    <a href="index.php?page=profile_admin" class="btn-back">
+        ← Back to Profile
+    </a>
+
+</div>
       </div>
     </div>
 

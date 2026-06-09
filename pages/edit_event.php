@@ -25,6 +25,7 @@ if (!$event) {
 if (isset($_POST['update'])) {
 
     $title = trim($_POST['title']);
+    $category = $_POST['category'];
     $desc  = trim($_POST['description']);
     $date  = $_POST['event_date'];
 
@@ -50,12 +51,12 @@ if (isset($_POST['update'])) {
 
     // UPDATE DATABASE (WITH STATUS)
     $stmt = $conn->prepare("
-        UPDATE events 
-        SET title=?, description=?, event_date=?, image=?, status=?
-        WHERE id=?
-    ");
+    UPDATE events 
+    SET title=?, description=?, event_date=?, image=?, status=?, category=?
+    WHERE id=?
+");
 
-    $stmt->bind_param("sssssi", $title, $desc, $date, $imageName, $status, $id);
+    $stmt->bind_param("ssssssi", $title, $desc, $date, $imageName, $status, $category, $id);
     $stmt->execute();
 
     // REDIRECT WITH SUCCESS MESSAGE
@@ -103,6 +104,29 @@ if (isset($_POST['update'])) {
                    value="<?= htmlspecialchars($event['title']) ?>"
                    placeholder="Event Title" required>
           </div>
+          <div class="field">
+  <label>Category</label>
+  <select name="category" required>
+    <option value="">Select Category</option>
+
+    <option value="inter-university"
+      <?= ($event['category'] == "inter-university") ? "selected" : "" ?>>
+      Inter-university
+    </option>
+
+    <option value="workshop"
+      <?= ($event['category'] == "workshop") ? "selected" : "" ?>>
+      Workshop
+    </option>
+
+    <option value="competition"
+      <?= ($event['category'] == "competition") ? "selected" : "" ?>>
+      Competition
+    </option>
+
+
+  </select>
+</div>
 
           <div class="field">
             <label>Event Date</label>

@@ -11,9 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phone    = mysqli_real_escape_string($conn, $_POST['phone']);
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    /* =========================
-       EMAIL UNIQUE CHECK (ALL TABLES)
-    ========================= */
+    /* EMAIL CHECK */
     $checkEmail = mysqli_query($conn, "
         SELECT email FROM member WHERE email='$email'
         UNION
@@ -23,88 +21,74 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ");
 
     if (mysqli_num_rows($checkEmail) > 0) {
-        echo "<script>alert('❌ Email already exists!'); window.history.back();</script>";
+        echo "<script>alert('Email already exists!'); window.history.back();</script>";
         exit;
     }
 
-    /* =========================
-       ADMIN SIGNUP
-    ========================= */
+    /* ================= ADMIN ================= */
     if ($role == "admin") {
 
         $dept     = mysqli_real_escape_string($conn, $_POST['dept']);
         $position = mysqli_real_escape_string($conn, $_POST['position']);
 
-        $query = "
+        mysqli_query($conn, "
             INSERT INTO admin_requests
             (name, email, password, dept, position, phone)
             VALUES
             ('$name', '$email', '$password', '$dept', '$position', '$phone')
-        ";
-
-        if (!mysqli_query($conn, $query)) {
-            die("Admin Insert Error: " . mysqli_error($conn));
-        }
+        ");
 
         echo "<script>
-                alert('✅ Admin request sent! Wait for approval.');
-                window.location='index.php';
-              </script>";
+        alert('Admin request sent!');
+        window.location=window.location.href;
+      </script>";
         exit;
     }
 
-    /* =========================
-       MEMBER SIGNUP
-    ========================= */
+    /* ================= MEMBER ================= */
     else {
 
         $roll         = mysqli_real_escape_string($conn, $_POST['roll']);
         $dept         = mysqli_real_escape_string($conn, $_POST['dept']);
         $session_year = mysqli_real_escape_string($conn, $_POST['session_year']);
 
-        $query = "
-INSERT INTO member
-(name, roll, dept, email, phone, session_year, password, profile_picture)
-VALUES
-('$name', '$roll', '$dept', '$email', '$phone', '$session_year', '$password', 'default.png')
-";
-
-if (!mysqli_query($conn, $query)) {
-    echo "ERROR: " . mysqli_error($conn);
-    exit;
-}
+        mysqli_query($conn, "
+            INSERT INTO member
+            (name, roll, dept, email, phone, session_year, password, profile_picture)
+            VALUES
+            ('$name', '$roll', '$dept', '$email', '$phone', '$session_year', '$password', 'default.png')
+        ");
 
         echo "<script>
-                alert('✅ Member registered successfully!');
-                window.location='index.php';
-              </script>";
+        alert('Member registered successfully!');
+        window.location=window.location.href;
+      </script>";
         exit;
     }
 }
 ?>
 
-<!-- =========================
-     UI SECTION
-========================= -->
+<link rel="stylesheet" href="signup.css">
 
-<section style="height: 200px;"></section>
 
-<div class="member-register-wrap">
-  <div class="member-register-card">
+<section style="height: 300px;"></section>
+<div class="signup-wrap">
+  <div class="signup-card">
 
-    <h2>Signup as <?= htmlspecialchars($role) ?></h2>
+    <div class="signup-header">
+      <h2>Signup as <?= htmlspecialchars($role) ?></h2>
+      <p>Fill the form carefully</p>
+    </div>
 
     <form method="POST">
 
-      <div class="member-register-grid">
+      <div class="grid">
 
-        <!-- NAME -->
         <div class="form-group">
           <label>Name</label>
           <input name="name" required>
         </div>
 
-        <!-- MEMBER: ROLL -->
         <?php if ($role == "member"): ?>
         <div class="form-group">
           <label>Roll</label>
@@ -112,75 +96,69 @@ if (!mysqli_query($conn, $query)) {
         </div>
         <?php endif; ?>
 
-        <!-- DEPARTMENT -->
         <div class="form-group">
           <label>Department</label>
           <select name="dept" required>
-            <option value="">Select</option>
-            <option value="CSE">CSE</option>
-            <option value="EEE">EEE</option>
-            <option value="BME">BME</option>
-            <option value="MTE">MTE</option>
-            <option value="ARCH">ARCH</option>
-            <option value="CE">CE</option>
+            <option value="">Select Department</option>
+            <option>CSE</option>
+            <option>EEE</option>
+            <option>BME</option>
+            <option>MTE</option>
+            <option>ARCH</option>
+            <option>CE</option>
           </select>
         </div>
 
-        <!-- ADMIN: POSITION -->
         <?php if ($role == "admin"): ?>
         <div class="form-group">
           <label>Position</label>
           <select name="position" required>
             <option value="">Select Position</option>
-            <option value="President">President</option>
-            <option value="Vice President">Vice President</option>
-            <option value="Secretary">Secretary</option>
-            <option value="Joint Secretary">Joint Secretary</option>
-            <option value="Treasurer">Treasurer</option>
-            <option value="Member">Member</option>
+            <option>President</option>
+            <option>Vice President</option>
+            <option>Secretary</option>
+            <option>Joint Secretary</option>
+            <option>Treasurer</option>
+            <option>Member</option>
           </select>
         </div>
         <?php endif; ?>
 
-        <!-- EMAIL -->
         <div class="form-group">
           <label>Email</label>
           <input name="email" type="email" required>
         </div>
 
-        <!-- PHONE -->
         <div class="form-group">
           <label>Phone</label>
           <input name="phone" type="tel" required>
         </div>
 
-        <!-- MEMBER: SESSION -->
         <?php if ($role == "member"): ?>
         <div class="form-group">
           <label>Session</label>
           <select name="session_year" required>
-            <option value="">Select</option>
-            <option value="1-1">1-1</option>
-            <option value="1-2">1-2</option>
-            <option value="2-1">2-1</option>
-            <option value="2-2">2-2</option>
-            <option value="3-1">3-1</option>
-            <option value="3-2">3-2</option>
-            <option value="4-1">4-1</option>
-            <option value="4-2">4-2</option>
+            <option value="">Select Session</option>
+            <option>1-1</option>
+            <option>1-2</option>
+            <option>2-1</option>
+            <option>2-2</option>
+            <option>3-1</option>
+            <option>3-2</option>
+            <option>4-1</option>
+            <option>4-2</option>
           </select>
         </div>
         <?php endif; ?>
 
-        <!-- PASSWORD -->
-        <div class="form-group" style="grid-column:1/-1;">
+        <div class="form-group full">
           <label>Password</label>
           <input name="password" type="password" required>
         </div>
 
       </div>
 
-      <button type="submit">Signup</button>
+      <button type="submit" class="btn">Signup</button>
 
     </form>
 

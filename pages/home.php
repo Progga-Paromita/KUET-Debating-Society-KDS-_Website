@@ -95,7 +95,7 @@ if ($upcoming && mysqli_num_rows($upcoming) > 0) {
 
       <div class="right">
         <p>
-          Join Cambridge’s largest student society today for the opportunity to
+          Join KDS largest student society today for the opportunity to
           see world-class speakers and debaters as well as many other member benefits.
         </p>
         <a href="index.php?page=role_select" class="join-btn">Join today</a>
@@ -109,6 +109,32 @@ if ($upcoming && mysqli_num_rows($upcoming) > 0) {
 <section class="members-section" id="members-section">
     <div class="container">
         <h2 class="section-title">Our Team Members</h2>
+
+        <!-- INTERNAL CSS ONLY FOR AVATAR -->
+        <style>
+            .member-avatar{
+                width: 90px;
+                height: 90px;
+                border-radius: 50%;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 10px;
+                background: #8fae9c;
+                color: #fff;
+                font-weight: bold;
+                font-size: 28px;
+                border: 3px solid rgba(0,0,0,0.08);
+            }
+
+            .member-avatar img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 50%;
+            }
+        </style>
 
         <div class="members-grid">
 
@@ -209,17 +235,23 @@ if ($upcoming && mysqli_num_rows($upcoming) > 0) {
             </div>
             <h3><?php echo $r['title']; ?></h3>
             <p><?php echo $r['description'] ?? ''; ?></p>
-            <?php if (!empty($r['link'])): ?>
-                <a href="<?php echo $r['link']; ?>" target="_blank" class="btn-primary">
-                    Open Link
-                </a>
-            <?php endif; ?>
+            <?php if (!empty($r['link']) || !empty($r['file'])): ?>
+    <div class="resource-actions">
 
-            <?php if (!empty($r['file'])): ?>
-                <a href="uploads/resources/<?php echo $r['file']; ?>" target="_blank" class="btn-primary">
-                    Download File
-                </a>
-            <?php endif; ?>
+        <?php if (!empty($r['link'])): ?>
+            <a href="<?php echo $r['link']; ?>" target="_blank" class="resource-btn link-btn">
+                Open Link
+            </a>
+        <?php endif; ?>
+
+        <?php if (!empty($r['file'])): ?>
+            <a href="uploads/resources/<?php echo $r['file']; ?>" target="_blank" class="resource-btn file-btn">
+                Download File
+            </a>
+        <?php endif; ?>
+
+    </div>
+<?php endif; ?>
         </div>
     <?php
         }
@@ -323,9 +355,66 @@ if ($upcoming && mysqli_num_rows($upcoming) > 0) {
           </div>
 
           <div class="form-group">
-            <label>Department</label>
-            <input type="text" name="department" required>
-          </div>
+    <label>Department</label>
+
+    <select name="department" required
+        style="
+            width:100%;
+            padding:12px 14px;
+            border-radius:10px;
+            font-size:14px;
+            outline:none;
+            cursor:pointer;
+            transition:0.2s ease;
+
+            /* LIGHT MODE */
+            background:#ffffff;
+            color:#1f2937;
+            border:1px solid rgba(0,0,0,0.08);
+
+            appearance:none;
+
+            background-image: linear-gradient(45deg, transparent 50%, #6b7280 50%),
+                              linear-gradient(135deg, #6b7280 50%, transparent 50%);
+            background-position: calc(100% - 18px) calc(50% - 3px),
+                                 calc(100% - 12px) calc(50% - 3px);
+            background-size:6px 6px;
+            background-repeat:no-repeat;
+            padding-right:35px;
+        "
+
+        onfocus="this.style.borderColor='#8fae9c'; this.style.boxShadow='0 0 0 3px rgba(143,174,156,0.2)'"
+        onblur="this.style.borderColor='rgba(0,0,0,0.08)'; this.style.boxShadow='none'"
+    >
+        <option value="">Select Department</option>
+        <option value="CSE">CSE</option>
+        <option value="EEE">EEE</option>
+        <option value="BME">BME</option>
+        <option value="MTE">MTE</option>
+        <option value="ARCH">ARCH</option>
+        <option value="CE">CE</option>
+        <option value="ChE">ChE</option>
+        <option value="ME">ME</option>
+        <option value="TE">TE</option>
+        <option value="LE">LE</option>
+        <option value="OTHERS">OTHERS</option>
+    </select>
+</div>
+
+<script>
+/* DARK MODE SUPPORT (DEEP DARK THEME) */
+if (document.documentElement.classList.contains('dark')) {
+    const select = document.querySelector('select[name="department"]');
+    if (select) {
+        select.style.background = '#111827';   // deep dark
+        select.style.color = '#e5e7eb';
+        select.style.border = '1px solid rgba(255,255,255,0.08)';
+
+        select.style.backgroundImage =
+            'linear-gradient(45deg, transparent 50%, #9ca3af 50%), linear-gradient(135deg, #9ca3af 50%, transparent 50%)';
+    }
+}
+</script>
 
           <div class="form-group">
             <label>Email</label>
@@ -368,3 +457,37 @@ if ($upcoming && mysqli_num_rows($upcoming) > 0) {
 
   </div>
 </section>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const buttons = document.querySelectorAll(".filter-btn");
+    const cards = document.querySelectorAll(".event-card");
+
+    buttons.forEach(btn => {
+        btn.addEventListener("click", function () {
+
+            // remove active class
+            buttons.forEach(b => b.classList.remove("active"));
+            this.classList.add("active");
+
+            const filter = this.getAttribute("data-filter");
+
+            cards.forEach(card => {
+
+                const category = card.getAttribute("data-category");
+
+                if (filter === "all" || category === filter) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+
+            });
+
+        });
+    });
+
+});
+</script>

@@ -7,8 +7,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != "admin") {
     exit;
 }
 
-$id = (int) $_GET['id'];
-
+$id = $_SESSION['user_id'];
 $admin = mysqli_fetch_assoc(
     mysqli_query($conn, "SELECT * FROM admin WHERE id=$id")
 );
@@ -62,7 +61,7 @@ if (isset($_POST['update_profile'])) {
 <link rel="stylesheet" href="edit_profile.css">
 
 <div class="top-profile-info">
-    <div class="role-pill">
+    <div class="role-pill" style="background-color: #c0d8ca; color: #406450;font-size: 24px;">
         <?= htmlspecialchars($admin['position']) ?>
     </div>
 
@@ -148,8 +147,7 @@ if (isset($_POST['update_profile'])) {
             <!-- ACTIONS -->
             <div class="action-buttons">
 
-    <a href="profile.php" class="btn-cancel">
-        ← Back to Profile
+        <a href="index.php?page=profile_admin" class="btn-cancel">        ← Back to Profile
     </a>
 
     <button type="submit" name="update_profile" class="btn-save">

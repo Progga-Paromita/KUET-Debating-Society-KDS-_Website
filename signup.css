@@ -1,0 +1,205 @@
+/* =========================
+   ROOT (LIGHT + DARK)
+========================= */
+:root {
+  --bg: #f6f8f5;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --border: rgba(0,0,0,0.1);
+  --primary: #8fae9c;
+  --primary-dark: #6f8f7d;
+}
+
+html.dark {
+  --bg: #0b1220;
+  --card: #111827;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --border: rgba(255,255,255,0.1);
+}
+
+/* =========================
+   BODY
+========================= */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* =========================
+   WRAPPER
+========================= */
+.signup-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* =========================
+   CARD
+========================= */
+.signup-card {
+  width: 100%;
+  max-width: 650px;
+  background: var(--card);
+  padding: 30px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+/* =========================
+   HEADER
+========================= */
+.signup-header h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.signup-header p {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* =========================
+   GRID (RESPONSIVE CORE)
+========================= */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+/* FULL WIDTH */
+.full {
+  grid-column: 1 / -1;
+}
+
+/* =========================
+   FORM FIELDS
+========================= */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: var(--muted);
+}
+
+input {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  outline: none;
+  transition: 0.2s;
+  font-size: 14px;
+}
+
+input:focus, select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(143,174,156,0.2);
+}
+
+/* =========================
+   BUTTON
+========================= */
+.btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+/* =========================
+   📱 TABLET
+========================= */
+@media (max-width: 768px) {
+  .signup-card {
+    padding: 22px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .signup-header h2 {
+    font-size: 20px;
+  }
+}
+
+/* =========================
+   📱 MOBILE
+========================= */
+@media (max-width: 480px) {
+  .signup-wrap {
+    padding: 12px;
+  }
+
+  .signup-card {
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  input {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .btn {
+    padding: 11px;
+  }
+}
+
+/* =========================
+   SELECT BASE STYLE
+========================= */
+select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* =========================
+   OPTIONS (LIMITED CONTROL)
+========================= */
+select option {
+  background: var(--card);
+  color: var(--text);
+}
+
+/* =========================
+   DARK MODE FIX
+========================= */
+html.dark select option {
+  background: #111827;   /* dark dropdown background */
+  color: #e5e7eb;        /* light text */
+}
