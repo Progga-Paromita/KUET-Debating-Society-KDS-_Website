@@ -67,6 +67,9 @@ switch ($page) {
     case "notif_count":
         include "pages/notif_count.php";
         break;
+    case "edit_profile":
+        include "pages/edit_profile.php";
+        break;
     default:
         echo "Page not found";
 }

@@ -214,72 +214,13 @@ if (isset($_POST['update_profile'])) {
         </div>
 
         <!-- ACTION -->
-        <button class="btn-edit-pro" onclick="toggleEdit()">
-            ✏ Edit Profile
-        </button>
+       
+            <a href="index.php?page=edit_profile&id=<?= $admin['id'] ?>" class="btn-edit-pro">
+             ✏ Edit Profile
+             </a>
 
     </div>
 
-    <!-- EDIT PANEL -->
-    <div id="editProfileBox" class="edit-profile-box">
-
-        <div class="edit-header">
-            <h3>Update Profile</h3>
-            <span onclick="toggleEdit()" class="close-btn">✖</span>
-        </div>
-
-        <form method="POST" enctype="multipart/form-data">
-
-            <!-- IMAGE PREVIEW -->
-            <div class="profile-upload">
-                <div class="upload-preview">
-                    <?php if (!empty($admin['profile_pic'])): ?>
-                        <img id="previewImg" src="uploads/profile/<?= htmlspecialchars($admin['profile_pic']) ?>">
-                    <?php else: ?>
-                        <div class="avatar-fallback big">
-                            <?= strtoupper(substr($admin['name'], 0, 1)) ?>
-                        </div>
-                    <?php endif; ?>
-                </div>
-
-                <label class="upload-btn">
-                    Change Photo
-                    <input type="file" name="profile_pic" accept="image/*" onchange="previewImage(event)">
-                </label>
-            </div>
-
-            <!-- FORM -->
-            <div class="form-grid">
-
-                <div class="field full">
-                    <label>Name</label>
-                    <input type="text" name="name" value="<?= htmlspecialchars($admin['name']) ?>" required>
-                </div>
-
-                <div class="field full">
-                    <label>Email</label>
-                    <input type="email" name="email" value="<?= htmlspecialchars($admin['email']) ?>" required>
-                </div>
-
-            </div>
-
-            <div class="edit-actions">
-                <button type="button" class="btn-cancel" onclick="toggleEdit()">Cancel</button>
-                <button class="btn-save" name="update_profile">✔ Save Changes</button>
-            </div>
-
-        </form>
-
-    </div>
-
-
-
-    <script>
-        function toggleEdit() {
-        let box = document.getElementById("editProfileBox");
-        box.style.display = (box.style.display === "none") ? "block" : "none";
-       }
-    </script>
   </div>
 
   <div class="panel">
