@@ -1,5 +1,11 @@
 <?php
+require_once __DIR__ . "/../config/db.php";
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
 $role = $_GET['role'] ?? "";
+
 
 /* =========================
    FORM SUBMIT HANDLER
@@ -12,18 +18,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
     /* EMAIL CHECK */
-    $checkEmail = mysqli_query($conn, "
-        SELECT email FROM member WHERE email='$email'
-        UNION
-        SELECT email FROM admin WHERE email='$email'
-        UNION
-        SELECT email FROM admin_requests WHERE email='$email'
-    ");
+    $checkEmailStmt = $conn->prepare(
+        "SELECT email FROM member WHERE email=?
+         UNION
+         SELECT email FROM admin WHERE email=?
+         UNION
+         SELECT email FROM admin_requests WHERE email=?"
+    );
+    $checkEmailStmt->bind_param("sss", $email, $email, $email);
+    $checkEmailStmt->execute();
+    $checkEmailResult = $checkEmailStmt->get_result();
 
-    if (mysqli_num_rows($checkEmail) > 0) {
+    if ($checkEmailResult && $checkEmailResult->num_rows > 0) {
         echo "<script>alert('Email already exists!'); window.history.back();</script>";
         exit;
     }
+
 
     /* ================= ADMIN ================= */
     if ($role == "admin") {
@@ -31,12 +41,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $dept     = mysqli_real_escape_string($conn, $_POST['dept']);
         $position = mysqli_real_escape_string($conn, $_POST['position']);
 
-        mysqli_query($conn, "
-            INSERT INTO admin_requests
-            (name, email, password, dept, position, phone)
-            VALUES
-            ('$name', '$email', '$password', '$dept', '$position', '$phone')
-        ");
+        $ins = $conn->prepare(
+            "INSERT INTO admin_requests (name, email, password, dept, position, phone)
+             VALUES (?, ?, ?, ?, ?, ?)"
+        );
+        $ins->bind_param("ssssss", $name, $email, $password, $dept, $position, $phone);
+        $ins->execute();
+
 
         echo "<script>
         alert('Admin request sent!');
@@ -52,12 +63,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $dept         = mysqli_real_escape_string($conn, $_POST['dept']);
         $session_year = mysqli_real_escape_string($conn, $_POST['session_year']);
 
-        mysqli_query($conn, "
-            INSERT INTO member
-            (name, roll, dept, email, phone, session_year, password, profile_picture)
-            VALUES
-            ('$name', '$roll', '$dept', '$email', '$phone', '$session_year', '$password', 'default.png')
-        ");
+        $ins = $conn->prepare(
+            "INSERT INTO member
+             (name, roll, dept, email, phone, session_year, password, profile_picture)
+             VALUES (?, ?, ?, ?, ?, ?, ?, 'default.png')"
+        );
+        $ins->bind_param("sssssss", $name, $roll, $dept, $email, $phone, $session_year, $password);
+        $ins->execute();
+
 
         echo "<script>
         alert('Member registered successfully!');

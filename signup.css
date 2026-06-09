@@ -203,3 +203,49 @@ html.dark select option {
   background: #111827;   /* dark dropdown background */
   color: #e5e7eb;        /* light text */
 }
+
+
+
+/* =========================
+   DARK MODE FORM FIX (FULL)
+========================= */
+
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background: #111827;
+  color: #e5e7eb;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* Placeholder color */
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* Focus state */
+html.dark input:focus,
+html.dark textarea:focus,
+html.dark select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(143,174,156,0.25);
+}
+
+/* Option dropdown fix */
+html.dark select option {
+  background: #111827;
+  color: #e5e7eb;
+}
+
+textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  resize: vertical;
+  outline: none;
+}

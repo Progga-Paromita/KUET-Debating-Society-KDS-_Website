@@ -105,6 +105,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <section style="height: 300px;"></section>
 
+<link rel="stylesheet" href="login.css">
+
 <div class="member-register-wrap" style="padding-top: 70px;">
   <div class="member-register-card">
 

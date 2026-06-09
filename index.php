@@ -75,11 +75,6 @@ switch ($page) {
 }
 
 include "includes/footer.php";
-
-if (isset($pages[$page]) && file_exists($pages[$page])) {
-    include $pages[$page];
-} else {
-    echo "Page not found!";
-}
 ?>
+
 

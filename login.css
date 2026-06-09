@@ -1,0 +1,200 @@
+/* =========================
+   ROOT THEME
+========================= */
+:root {
+  --bg: #f6f8f5;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --border: rgba(0,0,0,0.12);
+  --primary: #8fae9c;
+  --primary-dark: #6f8f7d;
+  --shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+html.dark {
+  --bg: #0b1220;
+  --card: #111827;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --border: rgba(255,255,255,0.12);
+  --shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+/* =========================
+   BODY
+========================= */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* =========================
+   WRAPPER
+========================= */
+.member-register-wrap {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* =========================
+   CARD
+========================= */
+.member-register-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card);
+  border-radius: 18px;
+  padding: 30px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: 0.3s ease;
+}
+
+/* =========================
+   HEADER
+========================= */
+.member-register-header h2 {
+  margin: 10px 0 5px;
+  font-size: 26px;
+}
+
+.member-register-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 20px;
+  background: rgba(143,174,156,0.15);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.member-register-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* =========================
+   FORM
+========================= */
+.member-register-form {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: var(--muted);
+}
+
+/* =========================
+   INPUTS
+========================= */
+input {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+}
+
+input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(143,174,156,0.2);
+}
+
+/* checkbox alignment */
+input[type="checkbox"] {
+  width: auto;
+  transform: scale(1.1);
+}
+
+/* =========================
+   BUTTON
+========================= */
+.member-register-actions {
+  margin-top: 10px;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+/* =========================
+   ERROR MESSAGE
+========================= */
+.member-register-form div[style*="color:red"] {
+  background: rgba(255,0,0,0.08);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .member-register-card {
+    padding: 22px;
+  }
+
+  .member-register-header h2 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .member-register-wrap {
+    padding: 12px;
+  }
+
+  .member-register-card {
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  input {
+    padding: 10px;
+  }
+}
+
+/* =========================
+   DARK MODE INPUT FIX
+========================= */
+html.dark input {
+  background: #111827;
+  color: #e5e7eb;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+html.dark input::placeholder {
+  color: #9ca3af;
+}

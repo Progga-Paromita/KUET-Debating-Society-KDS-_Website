@@ -47,38 +47,177 @@ mysqli_query($conn, "
   </div>
 </section>
 
-<section class="members-section" id="upcoming">
-  <div class="container">
+<section id="upcoming" class="members-section"
+style="padding:60px 15px; background:#f6f8f5; color:#1f2937;">
+
+<style>
+#upcoming.dark {
+  background: #0b1220 !important;
+  color: #e5e7eb !important;
+}
+
+#upcoming .container{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
+.event-card{
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+  transition: 0.3s ease;
+}
+
+#upcoming.dark .event-card{
+  background: #111827;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.event-card:hover{
+  transform: translateY(-5px);
+}
+
+/* CONTENT */
+.event-content{
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* IMAGE */
+.event-image{
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.event-image img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.3s;
+}
+
+.event-card:hover img{
+  transform: scale(1.05);
+}
+
+/* TEXT */
+.event-content h3{
+  margin: 0;
+  font-size: 18px;
+}
+
+.event-content p{
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+#upcoming.dark .event-content p{
+  color: #9ca3af;
+}
+
+/* META */
+.event-meta{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+/* STATUS */
+.event-status{
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(143,174,156,0.2);
+  color: #8fae9c;
+}
+
+/* DATE */
+.event-category{
+  color: #6b7280;
+}
+
+#upcoming.dark .event-category{
+  color: #9ca3af;
+}
+
+/* EMPTY */
+.members-section p{
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .event-content{ padding:16px; }
+  .event-image{ height:160px; }
+}
+
+@media(max-width:480px){
+  #upcoming{
+    padding:40px 10px;
+  }
+
+  .event-content h3{
+    font-size:16px;
+  }
+
+  .event-content p{
+    font-size:13px;
+  }
+}
+</style>
+
+<div class="container">
+
 <?php
 $upcoming = mysqli_query($conn, "SELECT * FROM events WHERE status='upcoming' ORDER BY event_date ASC");
 
 if ($upcoming && mysqli_num_rows($upcoming) > 0) {
    while ($e = mysqli_fetch_assoc($upcoming)) {
+?>
 
-    echo "<div class='event-card'>
-      <div class='event-content'>";
+<div class="event-card">
+  <div class="event-content">
 
-    if (!empty($e['image'])) {
-        echo "<div class='event-image'>
-                <img src='uploads/{$e['image']}' alt='{$e['title']}'>
-              </div>";
-    }
+    <?php if (!empty($e['image'])) { ?>
+      <div class="event-image">
+        <img src="uploads/<?= $e['image'] ?>" alt="<?= $e['title'] ?>">
+      </div>
+    <?php } ?>
 
-    echo "<h3>{$e['title']}</h3>
-          <p>{$e['description']}</p>
-          <div class='event-meta'>
-            <span class='event-status upcoming'>Upcoming</span>
-            <span class='event-category'>Date: {$e['event_date']}</span>
-          </div>";
+    <h3><?= htmlspecialchars($e['title']) ?></h3>
 
-    echo "</div></div>";
+    <p><?= htmlspecialchars($e['description']) ?></p>
+
+    <div class="event-meta">
+      <span class="event-status">Upcoming</span>
+      <span class="event-category">Date: <?= $e['event_date'] ?></span>
+    </div>
+
+  </div>
+</div>
+
+<?php
    }
 } else {
     echo "<p>No upcoming events.</p>";
 }
 ?>
 
-  </div>
+</div>
 </section>
 
 <hr>
@@ -199,6 +338,7 @@ if ($upcoming && mysqli_num_rows($upcoming) > 0) {
 <section class="resources-section" id="resources-section">
   <div class="container">
     <h2 class="section-title">Debating Resources</h2>
+
     <!-- FILTER BUTTONS -->
     <div class="events-filters">
       <button class="filter-btn active" data-filter="all">All Resources</button>
@@ -208,14 +348,17 @@ if ($upcoming && mysqli_num_rows($upcoming) > 0) {
       <button class="filter-btn" data-filter="Case Study">Case Study</button>
       <button class="filter-btn" data-filter="Video">Video</button>
     </div>
+
     <!-- GRID -->
     <div class="resources-grid">
+
     <?php
     $categories = ["General", "Speech", "Debate Guide", "Case Study", "Video"];
     foreach ($categories as $cat) {
         $res = mysqli_query($conn, "SELECT * FROM resources WHERE category='$cat'");
         while ($r = mysqli_fetch_assoc($res)) {
     ?>
+
         <div class="resource-card" data-category="<?php echo $cat; ?>">
 
             <div class="resource-icon">
@@ -233,30 +376,66 @@ if ($upcoming && mysqli_num_rows($upcoming) > 0) {
                 }
                 ?>
             </div>
+
             <h3><?php echo $r['title']; ?></h3>
             <p><?php echo $r['description'] ?? ''; ?></p>
+
             <?php if (!empty($r['link']) || !empty($r['file'])): ?>
-    <div class="resource-actions">
+            <div class="resource-actions">
 
-        <?php if (!empty($r['link'])): ?>
-            <a href="<?php echo $r['link']; ?>" target="_blank" class="resource-btn link-btn">
-                Open Link
-            </a>
-        <?php endif; ?>
+                <?php if (!empty($r['link'])): ?>
+                    <a href="<?php echo $r['link']; ?>" target="_blank"
+                       style="
+                          display:inline-block;
+                          padding:10px 16px;
+                          margin-right:10px;
+                          border-radius:10px;
+                          text-decoration:none;
+                          font-weight:600;
+                          font-size:13px;
+                          transition:0.3s;
+                          background: #8fae9c;
+                          color:#fff;
+                          box-shadow:0 4px 12px rgba(143,174,156,0.25);
+                       "
+                       onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(79,70,229,0.35)'"
+                       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(79,70,229,0.25)'"
+                    >
+                        🔗 Open Link
+                    </a>
+                <?php endif; ?>
+                <div style="height:10px;"></div>
+                <?php if (!empty($r['file'])): ?>
+                    <a href="uploads/resources/<?php echo $r['file']; ?>" target="_blank"
+                       style="
+                          display:inline-block;
+                          padding:10px 16px;
+                          border-radius:10px;
+                          text-decoration:none;
+                          font-weight:600;
+                          font-size:13px;
+                          transition:0.3s;
+                          background: #8fae9c;
+                          color:#fff;
+                          box-shadow:0 4px 12px rgba(5,150,105,0.25);
+                       "
+                       onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(5,150,105,0.35)'"
+                       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(5,150,105,0.25)'"
+                    >
+                        ⬇ Download File
+                    </a>
+                <?php endif; ?>
 
-        <?php if (!empty($r['file'])): ?>
-            <a href="uploads/resources/<?php echo $r['file']; ?>" target="_blank" class="resource-btn file-btn">
-                Download File
-            </a>
-        <?php endif; ?>
+            </div>
+            <?php endif; ?>
 
-    </div>
-<?php endif; ?>
         </div>
+
     <?php
         }
     }
     ?>
+
     </div>
   </div>
 </section>
@@ -315,7 +494,7 @@ if ($upcoming && mysqli_num_rows($upcoming) > 0) {
                         <?php echo $category; ?>
                     </span>
 
-                    <span class="event-status past">
+                    <span class="event-status past" style="background-color: #406450; color: #ffffff;">
                         Past
                     </span>
                 </div>
