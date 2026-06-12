@@ -115,7 +115,7 @@
 .request-id {
   font-size: 11px;
   margin-top: 6px;
-  color: var(--green-dark);
+  color: var(--admin-green-dark);
   font-weight: 800;
 }
 
@@ -224,9 +224,9 @@ html.dark .admin-list-card:hover {
   font-size: 14px;
   text-decoration: none;
 
-  color: var(--text);
-  background: var(--card);
-  border: 1px solid var(--border);
+  color: var(--admin-text);
+  background: var(--admin-card);
+  border: 1px solid var(--admin-border);
 
   box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 
@@ -238,7 +238,7 @@ html.dark .admin-list-card:hover {
 /* HOVER EFFECT */
 .btn-back:hover {
   transform: translateY(-3px);
-  border-color: var(--primary);
+  border-color: var(--admin-green);
   box-shadow: 0 15px 35px rgba(0,0,0,0.15);
   background: linear-gradient(135deg, rgba(143,174,156,0.15), transparent);
 }
@@ -260,8 +260,8 @@ html.dark .admin-list-card:hover {
 
 /* DARK MODE SUPPORT */
 html.dark .btn-back {
-  background: var(--card);
-  border-color: var(--border);
+  background: var(--admin-card);
+  border-color: var(--admin-border);
 }
 
 html.dark .btn-back:hover {

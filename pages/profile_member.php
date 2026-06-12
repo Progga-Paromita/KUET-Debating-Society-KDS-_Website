@@ -2,7 +2,10 @@
 session_start();
 require_once "config/db.php";
 
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== "member") {
+/* =========================
+   SESSION CHECK
+========================= */
+if (!isset($_SESSION['role']) || $_SESSION['role'] != "member") {
     header("Location: index.php?page=login");
     exit;
 }
@@ -10,284 +13,146 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== "member") {
 $id = (int) $_SESSION['user_id'];
 
 /* =========================
-   GET USER (SAFE)
+   GET MEMBER DATA
 ========================= */
-$userQuery = mysqli_prepare($conn, "SELECT * FROM member WHERE id=?");
-mysqli_stmt_bind_param($userQuery, "i", $id);
-mysqli_stmt_execute($userQuery);
-$user = mysqli_fetch_assoc(mysqli_stmt_get_result($userQuery));
+$stmt = $conn->prepare("SELECT * FROM member WHERE id=?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$member = $stmt->get_result()->fetch_assoc();
 
 /* =========================
-   UPDATE LAST LOGIN
-========================= */
-$updateLogin = mysqli_prepare($conn, "UPDATE member SET last_login=NOW() WHERE id=?");
-mysqli_stmt_bind_param($updateLogin, "i", $id);
-mysqli_stmt_execute($updateLogin);
-
-/* =========================
-   PROFILE IMAGE UPLOAD (SAFE)
-========================= */
-if (isset($_POST['upload_photo'])) {
-
-    if (!empty($_FILES['profile_img']['name'])) {
-
-        $file = $_FILES['profile_img'];
-
-        $allowed = ['jpg', 'jpeg', 'png', 'webp'];
-        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-
-        // Validate extension
-        if (!in_array($ext, $allowed)) {
-            header("Location: index.php?page=profile_member&error=invalid_type");
-            exit;
-        }
-
-        // Validate size (2MB)
-        if ($file['size'] > 2 * 1024 * 1024) {
-            header("Location: index.php?page=profile_member&error=too_large");
-            exit;
-        }
-
-        // Safe unique name
-        $newName = "uploads/profile_" . $id . "_" . time() . "." . $ext;
-
-        // Move file
-        move_uploaded_file($file['tmp_name'], $newName);
-
-        // Delete old image (optional cleanup)
-        if (!empty($user['profile_img']) && file_exists($user['profile_img'])) {
-            unlink($user['profile_img']);
-        }
-
-        // Update DB
-        $up = mysqli_prepare($conn, "UPDATE member SET profile_img=? WHERE id=?");
-        mysqli_stmt_bind_param($up, "si", $newName, $id);
-        mysqli_stmt_execute($up);
-    }
-
-    header("Location: index.php?page=profile_member&success=photo_updated");
-    exit;
-}
-/* =========================
-   UPDATE PROFILE (SAFE)
+   UPDATE PROFILE
 ========================= */
 if (isset($_POST['update_profile'])) {
 
-    $name  = trim($_POST['name']);
-    $phone = trim($_POST['phone']);
-    $bio   = trim($_POST['bio']);
+    $name  = $_POST['name'];
+    $email = $_POST['email'];
+    $dept  = $_POST['dept'];
+    $phone = $_POST['phone'];
 
-    $up = mysqli_prepare($conn, "
+    $profile_pic = $member['profile_picture'];
+
+    // IMAGE UPLOAD
+    if (!empty($_FILES['profile_pic']['name'])) {
+
+        $ext = strtolower(pathinfo($_FILES['profile_pic']['name'], PATHINFO_EXTENSION));
+        $allowed = ['jpg','jpeg','png'];
+
+        if (in_array($ext, $allowed)) {
+
+            $profile_pic = time() . "_" . $_FILES['profile_pic']['name'];
+            move_uploaded_file($_FILES['profile_pic']['tmp_name'], "uploads/profile/" . $profile_pic);
+        }
+    }
+
+    $stmt = $conn->prepare("
         UPDATE member 
-        SET name=?, phone=?, bio=? 
+        SET name=?, email=?, dept=?, phone=?, profile_picture=? 
         WHERE id=?
     ");
 
-    mysqli_stmt_bind_param($up, "sssi", $name, $phone, $bio, $id);
-    mysqli_stmt_execute($up);
+    $stmt->bind_param("sssssi", $name, $email, $dept, $phone, $profile_pic, $id);
+    $stmt->execute();
 
     header("Location: index.php?page=profile_member");
     exit;
 }
-
-/* =========================
-   REAL STATS (SAFE)
-========================= */
-$email = $user['email'];
-
-function getCount($conn, $sql, $type, $value) {
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, $type, $value);
-    mysqli_stmt_execute($stmt);
-    return mysqli_fetch_assoc(mysqli_stmt_get_result($stmt))['total'];
-}
-
-$totalQueries = getCount(
-    $conn,
-    "SELECT COUNT(*) as total FROM queries WHERE email=?",
-    "s",
-    $email
-);
-
-$unreadQueries = getCount(
-    $conn,
-    "SELECT COUNT(*) as total FROM queries WHERE email=? AND status='unread'",
-    "s",
-    $email
-);
-
-$replies = getCount(
-    $conn,
-    "SELECT COUNT(*) as total FROM queries WHERE email=? AND status='read'",
-    "s",
-    $email
-);
-
-/* =========================
-   RECENT ACTIVITY (FIXED)
-========================= */
-$recentStmt = mysqli_prepare(
-    $conn,
-    "SELECT * FROM queries WHERE email=? ORDER BY id DESC LIMIT 5"
-);
-
-mysqli_stmt_bind_param($recentStmt, "s", $email);
-mysqli_stmt_execute($recentStmt);
-$recent = mysqli_stmt_get_result($recentStmt);
 ?>
 
 <!-- =========================
-     UI
+     UI SECTION
 ========================= -->
-<!-- TOP SPACER -->
-<section style="height: 300px;"></section>
 
-<link rel="stylesheet" href="member_profile.css">
+<link rel="stylesheet" href="profile_member.css">
+<section style="height: 200px;"></section>
 
-<div class="dashboard-wrapper">
+<div class="profile-wrapper">
 
-<!-- LEFT -->
-<div class="left-panel">
+    <!-- PROFILE CARD -->
+    <div class="profile-card">
 
-  <!-- PROFILE CARD -->
-  <div class="profile-card">
-
-    <?php if (!empty($user['profile_img'])) { ?>
-        <img src="<?= $user['profile_img'] ?>" class="profile-avatar-img">
-    <?php } else { ?>
-        <div class="profile-avatar-fallback">
-            <?= strtoupper(substr($user['name'],0,1)) ?>
+        <div class="profile-header">
+            <h2>Hello, <?= htmlspecialchars($member['name']) ?></h2>
+            <p>Welcome to your profile</p>
         </div>
-    <?php } ?>
 
-    <h2><?= htmlspecialchars($user['name']) ?></h2>
-    <p><?= htmlspecialchars($user['email']) ?></p>
-
-    <span class="badge">👤 Member</span>
-
-    <p style="margin-top:10px; color:#777;">
-        <?= $user['bio'] ?? 'No bio added yet' ?>
-    </p>
-
-  </div>
-
-  <!-- QUICK ACTIONS -->
-  <div class="card">
-    <h3>⚡ Quick Actions</h3>
-
-    <form method="POST" enctype="multipart/form-data" class="upload-box">
-
-    <label class="upload-label">
-        📷 Choose Profile Image
-    </label>
-
-    <input type="file" name="profile_img" id="profileInput" accept="image/*" required>
-
-    <!-- Preview -->
-    <div class="preview-box">
-        <img id="previewImg" src="#" alt="Preview" style="display:none;">
-    </div>
-
-    <button name="upload_photo">Upload Photo</button>
-
-    <p class="hint">Allowed: JPG, PNG, WEBP | Max: 2MB</p>
-</form>
-    <form method="POST">
-      <input type="text" name="name" placeholder="Name" value="<?= $user['name'] ?>">
-      <input type="text" name="phone" placeholder="Phone" value="<?= $user['phone'] ?>">
-      <textarea name="bio" placeholder="Bio"><?= $user['bio'] ?></textarea>
-      <button name="update_profile">Update Profile</button>
-    </form>
-
-  </div>
-
-</div>
-
-
-
-  <!-- STATS -->
-  <div class="stats">
-
-    <div class="stat">
-      <h4>Total Messages</h4>
-      <p><?= $totalQueries ?></p>
-    </div>
-
-    <div class="stat">
-      <h4>Unread</h4>
-      <p><?= $unreadQueries ?></p>
-    </div>
-
-    <div class="stat">
-      <h4>Replies</h4>
-      <p><?= $replies ?></p>
-    </div>
-
-    <div class="stat">
-      <h4>Last Login</h4>
-      <p><?= $user['last_login'] ?? 'N/A' ?></p>
-    </div>
-
-  </div>
-
-  <!-- GRID -->
-  <div class="grid">
-
-    <!-- RECENT MESSAGES -->
-    <div class="card large">
-      <h3>💬 Recent Messages</h3>
-
-      <?php while ($r = mysqli_fetch_assoc($recent)) { ?>
-        <div class="message">
-          <span class="dot <?= $r['status']=='unread' ? 'red' : 'green' ?>"></span>
-          <?= htmlspecialchars($r['question']) ?>
+        <!-- IMAGE -->
+        <div class="profile-image">
+            <?php if (!empty($member['profile_picture'])): ?>
+                <img src="uploads/profile/<?= htmlspecialchars($member['profile_picture']) ?>">
+            <?php else: ?>
+                <div class="avatar-fallback">
+                    <?= strtoupper(substr($member['name'], 0, 1)) ?>
+                </div>
+            <?php endif; ?>
         </div>
-      <?php } ?>
+
+        <!-- DETAILS -->
+        <div class="profile-details">
+            <p><strong>Name:</strong> <?= htmlspecialchars($member['name']) ?></p>
+            <p><strong>Email:</strong> <?= htmlspecialchars($member['email']) ?></p>
+            <p><strong>Department:</strong> <?= htmlspecialchars($member['dept']) ?></p>
+            <p><strong>Phone:</strong> <?= htmlspecialchars($member['phone']) ?></p>
+            <p><strong>Session:</strong> <?= htmlspecialchars($member['session_year']) ?></p>
+        </div>
+
+        <!-- EDIT BUTTON -->
+        <button onclick="toggleEdit()" class="btn-edit">✏ Edit Profile</button>
 
     </div>
 
-    <!-- NOTIFICATIONS -->
-    <div class="card large">
-      <h3>🔔 Notifications</h3>
+    <!-- EDIT FORM -->
+    <div class="edit-card" id="editForm" style="display:none;">
 
-      <div class="notify">You have <?= $unreadQueries ?> unread messages</div>
-      <div class="notify">Total replies received: <?= $replies ?></div>
-      <div class="notify">Account active</div>
+        <h3>Edit Profile</h3>
 
+        <form method="POST" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <label>Name</label>
+                <input name="name" value="<?= htmlspecialchars($member['name']) ?>" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input name="email" value="<?= htmlspecialchars($member['email']) ?>" required>
+            </div>
+
+            <div class="form-group">
+                <label>Phone</label>
+                <input name="phone" value="<?= htmlspecialchars($member['phone']) ?>">
+            </div>
+
+            <div class="form-group">
+                <label>Department</label>
+                <select name="dept" required>
+                    <option value="CSE" <?= $member['dept']=="CSE"?"selected":"" ?>>CSE</option>
+                    <option value="EEE" <?= $member['dept']=="EEE"?"selected":"" ?>>EEE</option>
+                    <option value="BME" <?= $member['dept']=="BME"?"selected":"" ?>>BME</option>
+                    <option value="MTE" <?= $member['dept']=="MTE"?"selected":"" ?>>MTE</option>
+                    <option value="ARCH" <?= $member['dept']=="ARCH"?"selected":"" ?>>ARCH</option>
+                    <option value="CE" <?= $member['dept']=="CE"?"selected":"" ?>>CE</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Change Photo</label>
+                <input type="file" name="profile_pic">
+            </div>
+
+            <button type="submit" name="update_profile" class="btn-save">
+                Save Changes
+            </button>
+
+        </form>
     </div>
 
-  </div>
-
-  <!-- ACTIVITY -->
-  <div class="card">
-    <h3>📌 Activity Timeline</h3>
-
-    <?php while ($r = $recent) { ?>
-      <div class="timeline">
-        ✔ <?= htmlspecialchars($r['question']) ?>
-      </div>
-    <?php } ?>
-
-  </div>
-
-</div>
 </div>
 
-
+<!-- TOGGLE SCRIPT -->
 <script>
-document.getElementById("profileInput").addEventListener("change", function (event) {
-    const file = event.target.files[0];
-
-    if (file) {
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-            const preview = document.getElementById("previewImg");
-            preview.src = e.target.result;
-            preview.style.display = "block";
-        };
-
-        reader.readAsDataURL(file);
-    }
-});
+function toggleEdit() {
+    const form = document.getElementById("editForm");
+    form.style.display = form.style.display === "none" ? "block" : "none";
+}
 </script>

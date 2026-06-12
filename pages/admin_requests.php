@@ -52,6 +52,7 @@ if (isset($_GET['reject'])) {
 ?>
 <section style="height: 300px;"></section>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
 <link rel="stylesheet" href="admin_requests.css">
 
 

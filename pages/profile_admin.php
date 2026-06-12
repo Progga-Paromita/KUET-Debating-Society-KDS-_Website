@@ -451,35 +451,80 @@ if (isset($_POST['update_profile'])) {
   </div>
 
   <!-- ── Member Management ───────────────────────────────── -->
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-header-icon">👥</div>
-      <h1>Member Management</h1>
-    </div>
-    <div class="panel-body">
-      <div class="members-grid">
-      <?php
-        $result = mysqli_query($conn, "SELECT * FROM member");
-        while ($row = mysqli_fetch_assoc($result)):
-          $parts    = explode(' ', trim($row['name']));
-          $initials = strtoupper(substr($parts[0], 0, 1) . (isset($parts[1]) ? substr($parts[1], 0, 1) : ''));
-      ?>
-        <div class="member-card">
-          <div class="member-avatar"><?= $initials ?></div>
-          <h3>Name: <?= htmlspecialchars($row['name']) ?></h3>
-          <div class="member-email">Email: <?= htmlspecialchars($row['email']) ?></div>
-          <!-- <div class="member-email">Roll: <?= htmlspecialchars($row['roll']) ?></div> -->
-          <div class="member-dept">Department: <?= htmlspecialchars($row['dept']) ?></div>
-          <div class="member-actions">
-            <a class="m-edit" href="index.php?page=edit_member&id=<?= $row['id'] ?>">✏ Edit</a>
-            <a class="m-delete"
-               href="index.php?page=profile_admin&delete=<?= $row['id'] ?>"
-               onclick="return confirm('Delete this member?')">🗑 Delete</a>
-          </div>
-        </div>
-      <?php endwhile; ?>
-      </div>
-    </div>
+<div class="panel">
+  <div class="panel-header">
+    <div class="panel-header-icon">👥</div>
+    <h1>Member Management</h1>
   </div>
 
+  <div class="panel-body">
+    <div class="members-grid">
+
+    <?php
+      $result = mysqli_query($conn, "SELECT * FROM member");
+
+      while ($row = mysqli_fetch_assoc($result)):
+
+        $parts = explode(' ', trim($row['name']));
+        $initials = strtoupper(
+          substr($parts[0], 0, 1) . 
+          (isset($parts[1]) ? substr($parts[1], 0, 1) : '')
+        );
+
+        // ✅ correct DB field
+        $img = !empty($row['profile_picture']) ? $row['profile_picture'] : '';
+    ?>
+
+      <div class="member-card">
+
+        <!-- AVATAR -->
+        <div class="member-avatar">
+
+          <?php if (!empty($img)) { ?>
+
+            <img src="uploads/profile/<?= $img ?>"
+                 alt="Profile"
+                 style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
+
+          <?php } else { ?>
+
+            <?= $initials ?>
+
+          <?php } ?>
+
+        </div>
+
+        <!-- NAME -->
+        <h3>Name: <?= htmlspecialchars($row['name']) ?></h3>
+
+        <!-- EMAIL -->
+        <div class="member-email">
+          Email: <?= htmlspecialchars($row['email']) ?>
+        </div>
+
+        <!-- DEPARTMENT -->
+        <div class="member-dept">
+          Department: <?= htmlspecialchars($row['dept']) ?>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="member-actions">
+          <a class="m-edit" href="index.php?page=edit_member&id=<?= $row['id'] ?>">
+            ✏ Edit
+          </a>
+
+          <a class="m-delete"
+             href="index.php?page=profile_admin&delete=<?= $row['id'] ?>"
+             onclick="return confirm('Delete this member?')">
+            🗑 Delete
+          </a>
+        </div>
+
+      </div>
+
+    <?php endwhile; ?>
+
+    </div>
+  </div>
+</div>
 </div>

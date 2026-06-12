@@ -63,6 +63,7 @@ $result = mysqli_query($conn, $query);
 
 <section style="height: 300px;"></section>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
 <link rel="stylesheet" href="notifications.css">
 
 <div class="admin-page-wrap admin-page-centered">

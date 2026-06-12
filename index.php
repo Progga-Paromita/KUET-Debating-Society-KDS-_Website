@@ -1,4 +1,10 @@
 <?php
+ob_start();
+// Start session ONCE at the very top
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
 if (!isset($_SESSION['role']) && isset($_COOKIE['role'])) {
 
     $_SESSION['role'] = $_COOKIE['role'];
